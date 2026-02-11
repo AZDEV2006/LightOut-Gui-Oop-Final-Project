@@ -5,7 +5,7 @@ echo ===============================
 
 set SRC_DIR=src
 set BUILD_DIR=build
-set MAIN_CLASS=Main
+set MAIN_CLASS=src.Main
 
 if exist %BUILD_DIR% (
     rmdir /s /q %BUILD_DIR%
