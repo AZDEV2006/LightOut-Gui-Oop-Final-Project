@@ -3,6 +3,8 @@ package src;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.imageio.ImageIO;
+import java.io.File;
 
 public final class Theme {
 
@@ -86,5 +88,14 @@ public final class Theme {
             lbl.setFont(pixelFont(fontSize));
             lbl.setForeground(color);
             return lbl;
+      }
+
+      public static Image loadImage(String path) {
+            try {
+                  return ImageIO.read(new File("src/assets/" + path));
+            } catch (Exception e) {
+                  System.err.println("Failed to load image: " + path);
+                  return null;
+            }
       }
 }

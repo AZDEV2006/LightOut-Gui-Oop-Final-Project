@@ -411,7 +411,7 @@ public class GamePanel extends BackgroundPanel {
                   JButton nextBtn = Theme.makeButton("NEXT ▶");
                   nextBtn.addActionListener(e -> {
                         removeResultOverlay();
-                        if (model.getCurrentLevel() < 25) {
+                        if (model.getCurrentMode() == GameModel.GameMode.ENDLESS || model.getCurrentLevel() < 25) {
                               model.setCurrentLevel(model.getCurrentLevel() + 1);
                               onNextLevel.run();
                         } else {

@@ -161,7 +161,7 @@ public class MenuPanel extends BackgroundPanel {
             modeGrid.setAlignmentX(CENTER_ALIGNMENT);
 
             GameModel.GameMode[] modes = GameModel.GameMode.values();
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < modes.length; i++) {
                   final int idx = i;
                   JPanel card = new JPanel();
                   card.setBackground(Theme.BG_CARD);
@@ -218,8 +218,13 @@ public class MenuPanel extends BackgroundPanel {
 
             JButton nextBtn = Theme.makeButton("NEXT ▶");
             nextBtn.addActionListener(e -> {
-                  updateLevelButtons();
-                  showCard("level");
+                  if (selectedMode == GameModel.GameMode.CLASSIC) {
+                        updateLevelButtons();
+                        showCard("level");
+                  } else {
+                        model.setCurrentLevel(1);
+                        onStartGame.run();
+                  }
             });
 
             btnRow.add(backBtn);
@@ -234,7 +239,7 @@ public class MenuPanel extends BackgroundPanel {
 
       private void updateModeSelection() {
             GameModel.GameMode[] modes = GameModel.GameMode.values();
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < modes.length; i++) {
                   if (modes[i] == selectedMode) {
                         modeCards[i].setBorder(BorderFactory.createLineBorder(Theme.BULB_ON, 2));
                         modeCards[i].setBackground(new Color(57, 255, 20, 15));

@@ -8,7 +8,6 @@ public class BoardPanel extends JPanel {
 
       private BulbView[] bulbs;
       private LeverView[] levers;
-      private JPanel[] wires;
       private int count = 0;
 
       public BoardPanel() {
@@ -22,7 +21,6 @@ public class BoardPanel extends JPanel {
 
             bulbs = new BulbView[lightCount];
             levers = new LeverView[lightCount];
-            wires = new JPanel[lightCount];
 
             JPanel rowPanel = new JPanel();
             rowPanel.setOpaque(false);
@@ -37,12 +35,6 @@ public class BoardPanel extends JPanel {
                   bulbs[i] = new BulbView();
                   bulbs[i].setAlignmentX(Component.CENTER_ALIGNMENT);
 
-                  wires[i] = new JPanel();
-                  wires[i].setBackground(Theme.WIRE);
-                  wires[i].setPreferredSize(new Dimension(4, 24));
-                  wires[i].setMaximumSize(new Dimension(4, 24));
-                  wires[i].setAlignmentX(Component.CENTER_ALIGNMENT);
-
                   levers[i] = new LeverView();
                   levers[i].setAlignmentX(Component.CENTER_ALIGNMENT);
                   final int index = i;
@@ -56,9 +48,7 @@ public class BoardPanel extends JPanel {
 
                   column.add(Box.createVerticalGlue());
                   column.add(bulbs[i]);
-                  column.add(Box.createVerticalStrut(2));
-                  column.add(wires[i]);
-                  column.add(Box.createVerticalStrut(2));
+                  column.add(Box.createVerticalStrut(10));
                   column.add(levers[i]);
                   column.add(Box.createVerticalStrut(4));
                   column.add(lbl);
@@ -90,8 +80,6 @@ public class BoardPanel extends JPanel {
             for (int i = 0; i < count; i++) {
                   boolean on = model.isLightOn(i);
                   bulbs[i].setOn(on);
-                  levers[i].setOn(on);
-                  wires[i].setBackground(on ? Theme.WIRE_ON : Theme.WIRE);
             }
             repaint();
       }

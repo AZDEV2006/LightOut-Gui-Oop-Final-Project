@@ -5,10 +5,8 @@ import java.util.*;
 public class GameModel {
 
       public enum GameMode {
-            CLASSIC("Classic", "No time limit", false, 1.0),
-            TIME_ATTACK("Time Attack", "Beat the clock!", true, 1.5),
-            CHALLENGE("Challenge", "Fewest moves", false, 1.3),
-            ZEN("Zen", "Relax, no score", false, 0.5);
+            CLASSIC("Classic", "25 levels", false, 1.0),
+            ENDLESS("Endless", "Infinite levels", false, 1.2);
 
             public final String name, desc;
             public final boolean timed;
@@ -46,6 +44,9 @@ public class GameModel {
       private boolean done = false;
 
       public int lightCountFor(int level) {
+            if (currentMode == GameMode.ENDLESS) {
+                  return Math.min(15, 3 + (level - 1) / 5);
+            }
             if (level <= 5)
                   return 3;
             if (level <= 10)
@@ -58,6 +59,9 @@ public class GameModel {
       }
 
       public int diffFor(int level) {
+            if (currentMode == GameMode.ENDLESS) {
+                  return Math.min(50, level);
+            }
             return Math.min(10, (level - 1) / 2 + 1);
       }
 
@@ -70,8 +74,12 @@ public class GameModel {
       }
 
       public boolean isLevelUnlocked(int level) {
+            if (currentMode == GameMode.ENDLESS)
+                  return true;
             return level <= maxUnlocked && playerLevel >= requiredLevel(level);
       }
+
+      private int[][] connections;
 
       public void initBoard() {
             lightCount = lightCountFor(currentLevel);
@@ -79,6 +87,8 @@ public class GameModel {
             timeLimit = timeFor(currentLevel);
             lights = new boolean[lightCount];
             Arrays.fill(lights, false);
+
+            generateConnections();
 
             Random rng = new Random();
             int toggles = difficulty * 2 + lightCount;
@@ -96,10 +106,30 @@ public class GameModel {
             elapsed = 0;
       }
 
+      private void generateConnections() {
+            connections = new int[lightCount][];
+            Random rng = new Random();
+
+            for (int i = 0; i < lightCount; i++) {
+                  int count = 1 + rng.nextInt(3);
+                  count = Math.min(count, lightCount);
+
+                  Set<Integer> targets = new HashSet<>();
+
+                  while (targets.size() < count) {
+                        targets.add(rng.nextInt(lightCount));
+                  }
+
+                  connections[i] = targets.stream().mapToInt(Integer::intValue).toArray();
+            }
+      }
+
       public void doToggle(int index, boolean count) {
-            toggleSingle(index);
-            toggleSingle(index - 1);
-            toggleSingle(index + 1);
+            if (connections != null && index >= 0 && index < connections.length) {
+                  for (int target : connections[index]) {
+                        toggleSingle(target);
+                  }
+            }
             if (count)
                   moves++;
       }
@@ -178,8 +208,11 @@ public class GameModel {
             if (prev == null || stars > prev[0] || (stars == prev[0] && moves < prev[1])) {
                   bestScores.put(currentLevel, new int[] { stars, moves });
             }
-            if (currentLevel >= maxUnlocked && currentLevel < 25) {
-                  maxUnlocked = currentLevel + 1;
+
+            if (currentMode == GameMode.CLASSIC) {
+                  if (currentLevel >= maxUnlocked && currentLevel < 25) {
+                        maxUnlocked = currentLevel + 1;
+                  }
             }
       }
 
