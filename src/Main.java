@@ -1,11 +1,18 @@
 package src;
 
-import src.gui.LightsOutGUI;
+import javax.swing.*;
 
 public class Main {
       public static void main(String[] args) {
-            javax.swing.SwingUtilities.invokeLater(() -> {
-                  new LightsOutGUI().setVisible(true);
+            SwingUtilities.invokeLater(() -> {
+                  try {
+                        UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+                  } catch (Exception ignored) {
+                  }
+
+                  GameModel model = new GameModel();
+                  GameFrame frame = new GameFrame(model);
+                  frame.setVisible(true);
             });
       }
 }

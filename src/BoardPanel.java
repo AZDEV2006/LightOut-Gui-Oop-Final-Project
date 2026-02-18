@@ -1,0 +1,112 @@
+package src;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+
+public class BoardPanel extends JPanel {
+
+      private BulbView[] bulbs;
+      private LeverView[] levers;
+      private JPanel[] wires;
+      private int count = 0;
+
+      public BoardPanel() {
+            setOpaque(false);
+            setLayout(new BorderLayout());
+      }
+
+      public void buildBoard(int lightCount, ActionListener leverListener) {
+            removeAll();
+            this.count = lightCount;
+
+            bulbs = new BulbView[lightCount];
+            levers = new LeverView[lightCount];
+            wires = new JPanel[lightCount];
+
+            JPanel rowPanel = new JPanel();
+            rowPanel.setOpaque(false);
+            rowPanel.setLayout(new GridLayout(1, lightCount, 12, 0));
+
+            for (int i = 0; i < lightCount; i++) {
+
+                  JPanel column = new JPanel();
+                  column.setOpaque(false);
+                  column.setLayout(new BoxLayout(column, BoxLayout.Y_AXIS));
+
+                  bulbs[i] = new BulbView();
+                  bulbs[i].setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                  wires[i] = new JPanel();
+                  wires[i].setBackground(Theme.WIRE);
+                  wires[i].setPreferredSize(new Dimension(4, 24));
+                  wires[i].setMaximumSize(new Dimension(4, 24));
+                  wires[i].setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                  levers[i] = new LeverView();
+                  levers[i].setAlignmentX(Component.CENTER_ALIGNMENT);
+                  final int index = i;
+                  levers[i].addActionListener(e -> {
+                        leverListener.actionPerformed(
+                                    new java.awt.event.ActionEvent(this, 40, String.valueOf(index)));
+                  });
+
+                  JLabel lbl = Theme.makeLabel(String.valueOf(i + 1), 10, Theme.TEXT_DIM);
+                  lbl.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                  column.add(Box.createVerticalGlue());
+                  column.add(bulbs[i]);
+                  column.add(Box.createVerticalStrut(2));
+                  column.add(wires[i]);
+                  column.add(Box.createVerticalStrut(2));
+                  column.add(levers[i]);
+                  column.add(Box.createVerticalStrut(4));
+                  column.add(lbl);
+                  column.add(Box.createVerticalGlue());
+
+                  rowPanel.add(column);
+            }
+
+            JPanel wrapper = new JPanel(new BorderLayout());
+            wrapper.setOpaque(false);
+            wrapper.setBorder(BorderFactory.createEmptyBorder(16, 24, 16, 24));
+            wrapper.add(rowPanel, BorderLayout.CENTER);
+
+            JPanel frame = new JPanel(new BorderLayout());
+            frame.setBackground(Theme.BG_CARD);
+            frame.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(Theme.LEVER_BASE, 3),
+                        BorderFactory.createLineBorder(Theme.BG_DARK, 2)));
+            frame.add(wrapper, BorderLayout.CENTER);
+
+            add(frame, BorderLayout.CENTER);
+            revalidate();
+            repaint();
+      }
+
+      public void updateFromModel(GameModel model) {
+            if (bulbs == null)
+                  return;
+            for (int i = 0; i < count; i++) {
+                  boolean on = model.isLightOn(i);
+                  bulbs[i].setOn(on);
+                  levers[i].setOn(on);
+                  wires[i].setBackground(on ? Theme.WIRE_ON : Theme.WIRE);
+            }
+            repaint();
+      }
+
+      public void showHint(int index, boolean show) {
+            if (bulbs != null && index >= 0 && index < count) {
+                  bulbs[index].setHintGlow(show);
+            }
+      }
+
+      public void clearHints() {
+            if (bulbs != null) {
+                  for (BulbView bulb : bulbs) {
+                        bulb.setHintGlow(false);
+                  }
+            }
+      }
+}
