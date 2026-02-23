@@ -19,6 +19,8 @@ public class MenuPanel extends BackgroundPanel {
       private GameModel.GameMode selectedMode;
       private final JPanel[] modeCards = new JPanel[4];
       private final JLabel[] modeLabels = new JLabel[4];
+      private GameModel.Difficulty selectedDifficulty = GameModel.Difficulty.NORMAL;
+      private final JPanel[] diffCards = new JPanel[3];
 
       private final JButton[] levelBtns = new JButton[25];
       private final JLabel[] starLabels = new JLabel[25];
@@ -34,6 +36,7 @@ public class MenuPanel extends BackgroundPanel {
             cardPanel.add(buildStartScreen(), "start");
             cardPanel.add(buildModeScreen(), "mode");
             cardPanel.add(buildLevelScreen(), "level");
+            cardPanel.add(buildDifficultyScreen(), "difficulty");
 
             add(cardPanel, BorderLayout.CENTER);
             showCard("start");
@@ -218,13 +221,7 @@ public class MenuPanel extends BackgroundPanel {
 
             JButton nextBtn = Theme.makeButton("NEXT ▶");
             nextBtn.addActionListener(e -> {
-                  if (selectedMode == GameModel.GameMode.CLASSIC) {
-                        updateLevelButtons();
-                        showCard("level");
-                  } else {
-                        model.setCurrentLevel(1);
-                        onStartGame.run();
-                  }
+                  showCard("difficulty");
             });
 
             btnRow.add(backBtn);
@@ -311,6 +308,116 @@ public class MenuPanel extends BackgroundPanel {
 
             updateLevelButtons();
             return panel;
+      }
+
+      private JPanel buildDifficultyScreen() {
+            BackgroundPanel panel = new BackgroundPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+            panel.add(Box.createVerticalGlue());
+
+            JLabel title = Theme.makeLabel("SELECT DIFFICULTY", 24, Theme.TEXT_LIGHT);
+            title.setAlignmentX(CENTER_ALIGNMENT);
+            panel.add(title);
+
+            panel.add(Box.createVerticalStrut(20));
+
+            GameModel.Difficulty[] difficulties = GameModel.Difficulty.values();
+            JPanel diffRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 12, 0));
+            diffRow.setOpaque(false);
+
+            for (int i = 0; i < difficulties.length; i++) {
+                  final GameModel.Difficulty diff = difficulties[i];
+
+                  JPanel card = new JPanel();
+                  card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+                  card.setBackground(Theme.BG_CARD);
+                  card.setBorder(BorderFactory.createLineBorder(Theme.LEVER_BASE, 2));
+                  card.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                  card.setPreferredSize(new Dimension(100, 80));
+
+                  JLabel name = Theme.makeLabel(diff.name, 13, Theme.TEXT_LIGHT);
+                  name.setAlignmentX(CENTER_ALIGNMENT);
+                  name.setBorder(BorderFactory.createEmptyBorder(8, 10, 2, 10));
+                  card.add(name);
+
+                  String desc = diff.isGrid()
+                              ? (diff.hasTimer() ? "5×5  |  60s" : "5×5  |  ∞")
+                              : "1 row  |  ∞";
+                  JLabel subLbl = Theme.makeLabel(desc, 10, Theme.TEXT_DIM);
+                  subLbl.setAlignmentX(CENTER_ALIGNMENT);
+                  subLbl.setBorder(BorderFactory.createEmptyBorder(2, 10, 8, 10));
+                  card.add(subLbl);
+
+                  card.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                              selectedDifficulty = diff;
+                              updateDifficultySelection();
+                        }
+
+                        @Override
+                        public void mouseEntered(MouseEvent e) {
+                              if (diff != selectedDifficulty) {
+                                    card.setBorder(BorderFactory.createLineBorder(Theme.TEXT_DIM, 2));
+                              }
+                        }
+
+                        @Override
+                        public void mouseExited(MouseEvent e) {
+                              updateDifficultySelection();
+                        }
+                  });
+
+                  diffCards[i] = card;
+                  diffRow.add(card);
+            }
+
+            panel.add(diffRow);
+
+            panel.add(Box.createVerticalStrut(20));
+
+            JPanel btnRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 12, 0));
+            btnRow.setOpaque(false);
+
+            JButton backBtn = Theme.makeButton("◀ BACK");
+            backBtn.addActionListener(e -> showCard("mode"));
+
+            JButton startBtn = Theme.makeButton("NEXT ▶");
+            startBtn.addActionListener(e -> {
+                  model.setCurrentDifficulty(selectedDifficulty);
+                  if (selectedMode == GameModel.GameMode.CLASSIC) {
+                        updateLevelButtons();
+                        showCard("level");
+                  } else {
+                        model.setCurrentLevel(1);
+                        onStartGame.run();
+                  }
+            });
+
+            btnRow.add(backBtn);
+            btnRow.add(startBtn);
+            panel.add(btnRow);
+
+            panel.add(Box.createVerticalGlue());
+
+            updateDifficultySelection();
+            return panel;
+      }
+
+      private void updateDifficultySelection() {
+            GameModel.Difficulty[] difficulties = GameModel.Difficulty.values();
+            for (int i = 0; i < difficulties.length; i++) {
+                  if (diffCards[i] == null)
+                        continue;
+                  if (difficulties[i] == selectedDifficulty) {
+                        diffCards[i].setBorder(BorderFactory.createLineBorder(Theme.BULB_ON, 2));
+                        diffCards[i].setBackground(new Color(57, 255, 20, 15));
+                  } else {
+                        diffCards[i].setBorder(BorderFactory.createLineBorder(Theme.LEVER_BASE, 2));
+                        diffCards[i].setBackground(Theme.BG_CARD);
+                  }
+            }
       }
 
       private void updateLevelButtons() {

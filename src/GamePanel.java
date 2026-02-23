@@ -120,7 +120,7 @@ public class GamePanel extends BackgroundPanel {
             removeResultOverlay();
 
             model.initBoard();
-            boardPanel.buildBoard(model.getLightCount(), this::onLeverClicked);
+            boardPanel.buildBoard(model.getLightCount(), model.getCurrentDifficulty().isGrid(), this::onLeverClicked);
             boardPanel.updateFromModel(model);
             updateHUD();
             updateXPBar();
@@ -171,7 +171,7 @@ public class GamePanel extends BackgroundPanel {
             removePauseOverlay();
             removeResultOverlay();
             model.initBoard();
-            boardPanel.buildBoard(model.getLightCount(), this::onLeverClicked);
+            boardPanel.buildBoard(model.getLightCount(), model.getCurrentDifficulty().isGrid(), this::onLeverClicked);
             boardPanel.updateFromModel(model);
             updateHUD();
             pauseBtn.setText("PAUSE");
@@ -245,18 +245,18 @@ public class GamePanel extends BackgroundPanel {
       }
 
       private void updateTimeLabel() {
-            long sec = model.getElapsed() / 1000;
-            String timeStr = String.format("TIME %02d:%02d", sec / 60, sec % 60);
-
-            if (model.getCurrentMode().timed && model.getTimeLimit() > 0) {
-                  long remaining = model.getTimeLimit() * 1000L - model.getElapsed();
-                  if (remaining < 10000) {
-                        timeLabel.setForeground(Theme.LOSE_COLOR);
-                  } else {
-                        timeLabel.setForeground(Theme.TEXT_DIM);
-                  }
+            GameModel.Difficulty diff = model.getCurrentDifficulty();
+            if (diff.hasTimer()) {
+                  long remainingMs = Math.max(0, diff.timeLimit * 1000L - model.getElapsed());
+                  long sec = remainingMs / 1000;
+                  String timeStr = String.format("TIME %02d:%02d", sec / 60, sec % 60);
+                  timeLabel.setForeground(remainingMs < 10000 ? Theme.LOSE_COLOR : Theme.TEXT_DIM);
+                  timeLabel.setText(timeStr);
+            } else {
+                  long sec = model.getElapsed() / 1000;
+                  timeLabel.setForeground(Theme.TEXT_DIM);
+                  timeLabel.setText(String.format("TIME %02d:%02d", sec / 60, sec % 60));
             }
-            timeLabel.setText(timeStr);
       }
 
       private void updateXPBar() {
@@ -269,8 +269,7 @@ public class GamePanel extends BackgroundPanel {
       }
 
       private void showPauseOverlay() {
-            if (pauseOverlay != null)
-                  return;
+            if (pauseOverlay != null) return;
 
             pauseOverlay = new JPanel() {
                   @Override
@@ -290,11 +289,25 @@ public class GamePanel extends BackgroundPanel {
             pauseTitle.setAlignmentX(CENTER_ALIGNMENT);
             box.add(pauseTitle);
 
-            box.add(Box.createVerticalStrut(16));
+            box.add(Box.createVerticalStrut(20));
 
-            JLabel pauseHint = Theme.makeLabel("Click RESUME to continue", 13, Theme.TEXT_DIM);
-            pauseHint.setAlignmentX(CENTER_ALIGNMENT);
-            box.add(pauseHint);
+            JButton resumeBtn = Theme.makeButton("▶  RESUME");
+            resumeBtn.setAlignmentX(CENTER_ALIGNMENT);
+            resumeBtn.setMaximumSize(new Dimension(180, 40));
+            resumeBtn.addActionListener(e -> togglePause());
+            box.add(resumeBtn);
+
+            box.add(Box.createVerticalStrut(10));
+
+            JButton menuBtn = Theme.makeButton("MENU");
+            menuBtn.setAlignmentX(CENTER_ALIGNMENT);
+            menuBtn.setMaximumSize(new Dimension(180, 40));
+            menuBtn.addActionListener(e -> {
+                  removePauseOverlay();
+                  if (gameTimer != null) gameTimer.stop();
+                  onMenu.run();
+            });
+            box.add(menuBtn);
 
             pauseOverlay.add(box);
 
@@ -303,7 +316,7 @@ public class GamePanel extends BackgroundPanel {
                   root.setGlassPane(pauseOverlay);
                   pauseOverlay.setVisible(true);
             }
-      }
+            }     
 
       private void removePauseOverlay() {
             if (pauseOverlay != null) {
@@ -463,4 +476,5 @@ public class GamePanel extends BackgroundPanel {
             removePauseOverlay();
             removeResultOverlay();
       }
+
 }

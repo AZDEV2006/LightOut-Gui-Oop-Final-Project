@@ -20,6 +20,34 @@ public class GameModel {
             }
       }
 
+      public enum Difficulty {
+            EASY("Easy", 5, 3, 0, 3), 
+            NORMAL("Normal", 25, 5, 0, 1), 
+            HARD("Hard", 25, 9, 180, 0); 
+
+            public final String name;
+            public final int lightCount;
+            public final int shuffleMoves;
+            public final int timeLimit; 
+            public final int hintsAllowed;
+
+            Difficulty(String n, int lc, int sm, int tl, int h) {
+                  name = n;
+                  lightCount = lc;
+                  shuffleMoves = sm;
+                  timeLimit = tl;
+                  hintsAllowed = h;
+            }
+
+            public boolean isGrid() {
+                  return this == NORMAL || this == HARD;
+            }
+
+            public boolean hasTimer() {
+                  return timeLimit > 0;
+            }
+      }
+
       private int playerLevel = 1;
       private int totalXP = 0;
       private int currentXP = 0;
@@ -31,6 +59,7 @@ public class GameModel {
       private final Map<Integer, int[]> bestScores = new HashMap<>();
 
       private GameMode currentMode = GameMode.CLASSIC;
+      private Difficulty currentDifficulty = Difficulty.NORMAL;
       private int currentLevel = 1;
       private int lightCount = 3;
       private int difficulty = 1;
@@ -82,17 +111,17 @@ public class GameModel {
       private int[][] connections;
 
       public void initBoard() {
-            lightCount = lightCountFor(currentLevel);
-            difficulty = diffFor(currentLevel);
-            timeLimit = timeFor(currentLevel);
+            lightCount = currentDifficulty.lightCount;
+            difficulty = currentDifficulty.shuffleMoves;
+            timeLimit = currentDifficulty.timeLimit;
+            hints = currentDifficulty.hintsAllowed;
             lights = new boolean[lightCount];
             Arrays.fill(lights, false);
 
             generateConnections();
 
             Random rng = new Random();
-            int toggles = difficulty * 2 + lightCount;
-            for (int i = 0; i < toggles; i++) {
+            for (int i = 0; i < difficulty; i++) {
                   doToggle(rng.nextInt(lightCount), false);
             }
             if (isSolved()) {
@@ -235,7 +264,7 @@ public class GameModel {
       }
 
       public boolean isTimeUp() {
-            return currentMode.timed && timeLimit > 0 && elapsed >= timeLimit * 1000L;
+            return currentDifficulty.timeLimit > 0 && elapsed >= currentDifficulty.timeLimit * 1000L;
       }
 
       public void pause() {
@@ -317,6 +346,10 @@ public class GameModel {
             return elapsed;
       }
 
+      public Difficulty getCurrentDifficulty() {
+            return currentDifficulty;
+      }
+
       public boolean isPaused() {
             return paused;
       }
@@ -343,5 +376,9 @@ public class GameModel {
 
       public void setDone(boolean done) {
             this.done = done;
+      }
+
+      public void setCurrentDifficulty(Difficulty d) {
+            this.currentDifficulty = d;
       }
 }

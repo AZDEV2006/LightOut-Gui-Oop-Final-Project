@@ -13,7 +13,7 @@ public class BulbView extends JPanel {
 
       public BulbView() {
             setOpaque(false);
-            setPreferredSize(new Dimension(80, 80)); // Adjust size as needed based on image
+            setPreferredSize(new Dimension(80, 80));
             setMinimumSize(new Dimension(60, 60));
       }
 
@@ -44,19 +44,16 @@ public class BulbView extends JPanel {
             int w = getWidth();
             int h = getHeight();
 
-            // Draw Glow
             if (hintGlow) {
                   g2.setColor(Theme.HINT_GLOW);
                   g2.fillOval(5, 5, w - 10, h - 10);
             }
 
-            // Draw Image
             Image img = on ? IMG_ON : IMG_OFF;
             if (img != null) {
                   int iw = img.getWidth(null);
                   int ih = img.getHeight(null);
 
-                  // Scale to fit if needed, preserving aspect ratio
                   double scale = Math.min((double) w / iw, (double) h / ih) * 0.8;
                   int dw = (int) (iw * scale);
                   int dh = (int) (ih * scale);
@@ -65,7 +62,6 @@ public class BulbView extends JPanel {
 
                   g2.drawImage(img, x, y, dw, dh, null);
             } else {
-                  // Fallback if image fails
                   g2.setColor(on ? Theme.BULB_ON : Theme.BULB_OFF);
                   g2.fillOval(15, 15, w - 30, h - 30);
             }
