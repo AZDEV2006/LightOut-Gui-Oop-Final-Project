@@ -101,6 +101,11 @@ public class GameModel {
       }
 
       public void initBoard() {
+            done = false;
+            paused = false;
+            moves = 0;
+            hintsUsed = 0;
+            elapsed = 0;
             lightCount = currentDifficulty.lightCount;
             leverCount = currentDifficulty.leverCount;
             difficulty = currentDifficulty.shuffleMoves;
