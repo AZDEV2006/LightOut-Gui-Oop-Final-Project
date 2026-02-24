@@ -1,0 +1,287 @@
+<mxfile host="app.diagrams.net" agent="Antigravity" version="24.0.0">
+  <diagram id="uml-class-diagram" name="UML Class Diagram">
+    <mxGraphModel dx="1800" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Package Labels -->
+        <mxCell id="pkg-src" value="package src" style="text;fontSize=14;fontStyle=1;fontColor=#333333;fillColor=#E6E6E6;rounded=1;strokeColor=#999999;spacingLeft=8;spacingRight=8;" vertex="1" parent="1">
+          <mxGeometry x="0" y="-40" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="pkg-gui" value="package src.gui" style="text;fontSize=14;fontStyle=1;fontColor=#333333;fillColor=#E6E6E6;rounded=1;strokeColor=#999999;spacingLeft=8;spacingRight=8;" vertex="1" parent="1">
+          <mxGeometry x="0" y="1090" width="150" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- =========== Main =========== -->
+        <mxCell id="c1" value="&lt;b&gt;Main&lt;/b&gt;" style="swimlane;fontStyle=1;align=center;startSize=26;collapsible=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="560" y="0" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="c1m" value="+ main(args: String[]): void {static}" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c1">
+          <mxGeometry y="26" width="220" height="54" as="geometry" />
+        </mxCell>
+
+        <!-- =========== GameFrame =========== -->
+        <mxCell id="c2" value="&lt;b&gt;GameFrame&lt;/b&gt;&#xa;&lt;i&gt;extends JFrame&lt;/i&gt;" style="swimlane;fontStyle=0;align=center;startSize=40;collapsible=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="500" y="140" width="340" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="c2f" value="- cards: CardLayout&#xa;- root: BackgroundPanel&#xa;- model: GameModel&#xa;- menuPanel: MenuPanel&#xa;- gamePanel: GamePanel" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c2">
+          <mxGeometry y="40" width="340" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="c2s" value="" style="line;strokeWidth=1;strokeColor=#6c8ebf;" vertex="1" parent="c2">
+          <mxGeometry y="120" width="340" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c2m" value="+ GameFrame(model: GameModel)&#xa;+ showMenu(): void&#xa;+ startGame(): void" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c2">
+          <mxGeometry y="128" width="340" height="72" as="geometry" />
+        </mxCell>
+
+        <!-- =========== GameModel =========== -->
+        <mxCell id="c3" value="&lt;b&gt;GameModel&lt;/b&gt;" style="swimlane;fontStyle=1;align=center;startSize=26;collapsible=0;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="0" y="140" width="420" height="640" as="geometry" />
+        </mxCell>
+        <mxCell id="c3f" value="- gamesPlayed: int&#xa;- gamesWon: int&#xa;- hints: int&#xa;- maxUnlocked: int&#xa;- bestScores: Map&lt;Integer, int[]&gt;&#xa;- currentMode: GameMode&#xa;- currentDifficulty: Difficulty&#xa;- currentLevel: int&#xa;- lightCount: int&#xa;- leverCount: int&#xa;- difficulty: int&#xa;- timeLimit: int&#xa;- moves: int&#xa;- hintsUsed: int&#xa;- lights: boolean[]&#xa;- startTime: long&#xa;- elapsed: long&#xa;- paused: boolean&#xa;- done: boolean&#xa;- connections: int[][]" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c3">
+          <mxGeometry y="26" width="420" height="310" as="geometry" />
+        </mxCell>
+        <mxCell id="c3s" value="" style="line;strokeWidth=1;strokeColor=#d6b656;" vertex="1" parent="c3">
+          <mxGeometry y="336" width="420" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c3m" value="+ lightCountFor(level: int): int&#xa;+ diffFor(level: int): int&#xa;+ timeFor(level: int): int&#xa;+ isLevelUnlocked(level: int): boolean&#xa;+ initBoard(): void&#xa;- generateConnections(): void&#xa;+ doToggle(index: int, count: boolean): void&#xa;- toggleSingle(index: int): void&#xa;+ isSolved(): boolean&#xa;+ getHint(): int&#xa;- countOn(): int&#xa;+ calcStars(): int&#xa;+ recordWin(): void&#xa;+ recordLoss(): void&#xa;+ useHint(): boolean&#xa;+ updateElapsed(): void&#xa;+ isTimeUp(): boolean&#xa;+ pause(): void&#xa;+ getStageProgress(): double&#xa;+ getters / setters..." style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c3">
+          <mxGeometry y="344" width="420" height="296" as="geometry" />
+        </mxCell>
+
+        <!-- =========== GameMode enum =========== -->
+        <mxCell id="c4" value="&lt;b&gt;«enum»&#xa;GameModel.GameMode&lt;/b&gt;" style="swimlane;fontStyle=0;align=center;startSize=40;collapsible=0;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="0" y="840" width="200" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="c4v" value="CLASSIC&#xa;ENDLESS" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;fontStyle=1;whiteSpace=wrap;" vertex="1" parent="c4">
+          <mxGeometry y="40" width="200" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="c4s" value="" style="line;strokeWidth=1;strokeColor=#d6b656;" vertex="1" parent="c4">
+          <mxGeometry y="76" width="200" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c4f" value="+ name: String&#xa;+ desc: String&#xa;+ timed: boolean" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c4">
+          <mxGeometry y="84" width="200" height="76" as="geometry" />
+        </mxCell>
+
+        <!-- =========== Difficulty enum =========== -->
+        <mxCell id="c5" value="&lt;b&gt;«enum»&#xa;GameModel.Difficulty&lt;/b&gt;" style="swimlane;fontStyle=0;align=center;startSize=40;collapsible=0;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="220" y="840" width="200" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="c5v" value="EASY&#xa;NORMAL&#xa;HARD" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;fontStyle=1;whiteSpace=wrap;" vertex="1" parent="c5">
+          <mxGeometry y="40" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="c5s" value="" style="line;strokeWidth=1;strokeColor=#d6b656;" vertex="1" parent="c5">
+          <mxGeometry y="90" width="200" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c5f" value="+ name: String&#xa;+ lightCount: int&#xa;+ leverCount: int&#xa;+ shuffleMoves: int&#xa;+ timeLimit: int&#xa;+ hintsAllowed: int&#xa;+ isGrid(): boolean&#xa;+ hasTimer(): boolean" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c5">
+          <mxGeometry y="98" width="200" height="152" as="geometry" />
+        </mxCell>
+
+        <!-- =========== GamePanel =========== -->
+        <mxCell id="c6" value="&lt;b&gt;GamePanel&lt;/b&gt;&#xa;&lt;i&gt;extends BackgroundPanel&lt;/i&gt;" style="swimlane;fontStyle=0;align=center;startSize=40;collapsible=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="910" y="140" width="360" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="c6f" value="- model: GameModel&#xa;- onMenu: Runnable&#xa;- onNextLevel: Runnable&#xa;- boardPanel: BoardPanel&#xa;- gameTimer: Timer&#xa;- lvLabel, movesLabel, timeLabel, modeLabel: JLabel&#xa;- resetBtn, hintBtn, pauseBtn: JButton&#xa;- progressLabel: JLabel&#xa;- progressBarFill, progressBarBg: JPanel&#xa;- hintIndex: int&#xa;- hintTimer: Timer&#xa;- pauseOverlay: JPanel&#xa;- resultOverlay: JPanel&#xa;- showingResult: boolean" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c6">
+          <mxGeometry y="40" width="360" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="c6s" value="" style="line;strokeWidth=1;strokeColor=#6c8ebf;" vertex="1" parent="c6">
+          <mxGeometry y="250" width="360" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c6m" value="- buildUI(): void&#xa;+ startGame(): void&#xa;- onLeverClicked(e: ActionEvent): void&#xa;- resetGame(): void&#xa;- useHint(): void&#xa;- togglePause(): void&#xa;- updateHUD(): void&#xa;- updateTimeLabel(): void&#xa;- updateProgressBar(): void&#xa;- showPauseOverlay(): void&#xa;- removePauseOverlay(): void&#xa;- showResult(won: boolean): void&#xa;- removeResultOverlay(): void&#xa;+ stopTimers(): void" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c6">
+          <mxGeometry y="258" width="360" height="242" as="geometry" />
+        </mxCell>
+
+        <!-- =========== MenuPanel =========== -->
+        <mxCell id="c7" value="&lt;b&gt;MenuPanel&lt;/b&gt;&#xa;&lt;i&gt;extends BackgroundPanel&lt;/i&gt;" style="swimlane;fontStyle=0;align=center;startSize=40;collapsible=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="910" y="700" width="360" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="c7f" value="- model: GameModel&#xa;- onStartGame: Runnable&#xa;- menuCards: CardLayout&#xa;- cardPanel: JPanel&#xa;- progressLabel: JLabel&#xa;- modeInfoLabel: JLabel&#xa;- progressBarFill: JPanel&#xa;- progressBarBg: JPanel&#xa;- selectedMode: GameMode&#xa;- modeCards: JPanel[4]&#xa;- modeLabels: JLabel[4]&#xa;- selectedDifficulty: Difficulty&#xa;- diffCards: JPanel[3]&#xa;- levelBtns: JButton[25]&#xa;- starLabels: JLabel[25]" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c7">
+          <mxGeometry y="40" width="360" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="c7s" value="" style="line;strokeWidth=1;strokeColor=#6c8ebf;" vertex="1" parent="c7">
+          <mxGeometry y="270" width="360" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c7m" value="+ refresh(): void&#xa;- showCard(name: String): void&#xa;- buildStartScreen(): JPanel&#xa;- updatePlayerInfo(): void&#xa;- showProfile(): void&#xa;- buildModeScreen(): JPanel&#xa;- updateModeSelection(): void&#xa;- buildDifficultyScreen(): JPanel&#xa;- updateDifficultySelection(): void&#xa;- buildLevelScreen(): JPanel&#xa;- updateLevelButtons(): void" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c7">
+          <mxGeometry y="278" width="360" height="222" as="geometry" />
+        </mxCell>
+
+        <!-- =========== BoardPanel =========== -->
+        <mxCell id="c8" value="&lt;b&gt;BoardPanel&lt;/b&gt;&#xa;&lt;i&gt;extends JPanel&lt;/i&gt;" style="swimlane;fontStyle=0;align=center;startSize=40;collapsible=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="1340" y="140" width="320" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="c8f" value="- bulbs: BulbView[]&#xa;- levers: LeverView[]&#xa;- count: int" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c8">
+          <mxGeometry y="40" width="320" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="c8s" value="" style="line;strokeWidth=1;strokeColor=#6c8ebf;" vertex="1" parent="c8">
+          <mxGeometry y="90" width="320" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c8m" value="+ buildBoard(lightCount: int, leverCount: int,&#xa;     isGrid: boolean, listener: ActionListener): void&#xa;+ updateFromModel(model: GameModel): void&#xa;+ showHint(index: int, show: boolean): void&#xa;+ clearHints(): void" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c8">
+          <mxGeometry y="98" width="320" height="122" as="geometry" />
+        </mxCell>
+
+        <!-- =========== BulbView =========== -->
+        <mxCell id="c9" value="&lt;b&gt;BulbView&lt;/b&gt;&#xa;&lt;i&gt;extends JPanel&lt;/i&gt;" style="swimlane;fontStyle=0;align=center;startSize=40;collapsible=0;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="1340" y="420" width="260" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="c9f" value="- IMG_ON: Image {static}&#xa;- IMG_OFF: Image {static}&#xa;- on: boolean&#xa;- hintGlow: boolean" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c9">
+          <mxGeometry y="40" width="260" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="c9s" value="" style="line;strokeWidth=1;strokeColor=#9673a6;" vertex="1" parent="c9">
+          <mxGeometry y="100" width="260" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c9m" value="+ setOn(on: boolean): void&#xa;+ isOn(): boolean&#xa;+ setHintGlow(glow: boolean): void&#xa;# paintComponent(g: Graphics): void" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c9">
+          <mxGeometry y="108" width="260" height="92" as="geometry" />
+        </mxCell>
+
+        <!-- =========== LeverView =========== -->
+        <mxCell id="c10" value="&lt;b&gt;LeverView&lt;/b&gt;&#xa;&lt;i&gt;extends JPanel&lt;/i&gt;" style="swimlane;fontStyle=0;align=center;startSize=40;collapsible=0;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="1340" y="680" width="260" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="c10f" value="- IMG_ON: Image {static}&#xa;- IMG_OFF: Image {static}&#xa;- on: boolean&#xa;- hovered: boolean&#xa;- listeners: List&lt;ActionListener&gt;" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c10">
+          <mxGeometry y="40" width="260" height="76" as="geometry" />
+        </mxCell>
+        <mxCell id="c10s" value="" style="line;strokeWidth=1;strokeColor=#9673a6;" vertex="1" parent="c10">
+          <mxGeometry y="116" width="260" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c10m" value="+ setOn(on: boolean): void&#xa;+ addActionListener(l: ActionListener): void&#xa;- fireAction(): void&#xa;# paintComponent(g: Graphics): void" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c10">
+          <mxGeometry y="124" width="260" height="96" as="geometry" />
+        </mxCell>
+
+        <!-- =========== BackgroundPanel =========== -->
+        <mxCell id="c11" value="&lt;b&gt;BackgroundPanel&lt;/b&gt;&#xa;&lt;i&gt;extends JPanel&lt;/i&gt;" style="swimlane;fontStyle=0;align=center;startSize=40;collapsible=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="500" y="400" width="340" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="c11f" value="- bgImage: BufferedImage {static}" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c11">
+          <mxGeometry y="40" width="340" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c11s" value="" style="line;strokeWidth=1;strokeColor=#6c8ebf;" vertex="1" parent="c11">
+          <mxGeometry y="66" width="340" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c11m" value="+ BackgroundPanel()&#xa;+ BackgroundPanel(layout: LayoutManager)&#xa;# paintComponent(g: Graphics): void" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c11">
+          <mxGeometry y="74" width="340" height="96" as="geometry" />
+        </mxCell>
+
+        <!-- =========== Theme =========== -->
+        <mxCell id="c12" value="&lt;b&gt;«final» Theme&lt;/b&gt;" style="swimlane;fontStyle=0;align=center;startSize=26;collapsible=0;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="500" y="630" width="340" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="c12f" value="+ BG_DARK: Color {static}&#xa;+ BG_PANEL: Color {static}&#xa;+ BG_CARD: Color {static}&#xa;+ BULB_ON / OFF / GLOW: Color {static}&#xa;+ LEVER_BASE / HANDLE / ON / OFF: Color {static}&#xa;+ BTN_BG / HOVER / BORDER / TEXT: Color {static}&#xa;+ PROGRESS_BAR_BG / FILL / FILL2: Color {static}&#xa;+ STAR_FILLED / EMPTY: Color {static}&#xa;+ TEXT_LIGHT / DIM / TITLE: Color {static}&#xa;+ WIN_COLOR / LOSE_COLOR: Color {static}&#xa;+ OVERLAY: Color {static}&#xa;+ HINT_GLOW: Color {static}&#xa;+ PX: int {static}" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c12">
+          <mxGeometry y="26" width="340" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="c12s" value="" style="line;strokeWidth=1;strokeColor=#b85450;" vertex="1" parent="c12">
+          <mxGeometry y="236" width="340" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c12m" value="- Theme() {private constructor}&#xa;+ pixelFont(size: float): Font {static}&#xa;+ makeButton(text: String): JButton {static}&#xa;+ makeLabel(text: String, fontSize: float,&#xa;     color: Color): JLabel {static}&#xa;+ loadImage(path: String): Image {static}" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c12">
+          <mxGeometry y="244" width="340" height="156" as="geometry" />
+        </mxCell>
+
+        <!-- =========== gui.ColorTheme =========== -->
+        <mxCell id="c13" value="&lt;b&gt;gui.ColorTheme&lt;/b&gt;" style="swimlane;fontStyle=1;align=center;startSize=26;collapsible=0;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="0" y="1130" width="240" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="c13f" value="+ BACKGROUND: Color {static}&#xa;+ PRIMARY: Color {static}&#xa;+ BUTTON_BG: Color {static}&#xa;+ BUTTON_HOVER: Color {static}&#xa;+ TEXT_COLOR: Color {static}" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c13">
+          <mxGeometry y="26" width="240" height="114" as="geometry" />
+        </mxCell>
+
+        <!-- =========== gui.LightsOutGUI =========== -->
+        <mxCell id="c14" value="&lt;b&gt;gui.LightsOutGUI&lt;/b&gt;&#xa;&lt;i&gt;extends JFrame&lt;/i&gt;" style="swimlane;fontStyle=0;align=center;startSize=40;collapsible=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="260" y="1130" width="260" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="c14f" value="- startButton: JButton&#xa;- exitButton: JButton&#xa;- difficultyBox: JComboBox&lt;String&gt;" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c14">
+          <mxGeometry y="40" width="260" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="c14s" value="" style="line;strokeWidth=1;strokeColor=#6c8ebf;" vertex="1" parent="c14">
+          <mxGeometry y="90" width="260" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c14m" value="+ LightsOutGUI()&#xa;- initUI(): void&#xa;- styleButton(button: JButton): void" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;" vertex="1" parent="c14">
+          <mxGeometry y="98" width="260" height="92" as="geometry" />
+        </mxCell>
+
+        <!-- ======================================= -->
+        <!-- RELATIONSHIPS (all flat, no nesting)    -->
+        <!-- ======================================= -->
+
+        <!-- Main --creates--> GameFrame -->
+        <mxCell id="e1" value="«creates»" style="endArrow=open;endFill=0;dashed=1;strokeWidth=1;fontSize=10;" edge="1" parent="1" source="c1" target="c2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Main --creates--> GameModel -->
+        <mxCell id="e2" value="«creates»" style="endArrow=open;endFill=0;dashed=1;strokeWidth=1;fontSize=10;" edge="1" parent="1" source="c1" target="c3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- GameFrame ◆--1-- GameModel (composition) -->
+        <mxCell id="e3" value="1" style="endArrow=diamondThin;endFill=1;startArrow=none;strokeWidth=1;fontSize=10;startSize=10;endSize=12;" edge="1" parent="1" source="c3" target="c2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- GameFrame ◆--1-- MenuPanel -->
+        <mxCell id="e4" value="1" style="endArrow=diamondThin;endFill=1;startArrow=none;strokeWidth=1;fontSize=10;startSize=10;endSize=12;" edge="1" parent="1" source="c7" target="c2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- GameFrame ◆--1-- GamePanel -->
+        <mxCell id="e5" value="1" style="endArrow=diamondThin;endFill=1;startArrow=none;strokeWidth=1;fontSize=10;startSize=10;endSize=12;" edge="1" parent="1" source="c6" target="c2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- GameFrame ◆-- BackgroundPanel -->
+        <mxCell id="e6" style="endArrow=diamondThin;endFill=1;startArrow=none;strokeWidth=1;endSize=12;" edge="1" parent="1" source="c11" target="c2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- GamePanel --uses--> GameModel -->
+        <mxCell id="e7" value="«uses»" style="endArrow=open;endFill=0;dashed=1;strokeWidth=1;fontSize=10;" edge="1" parent="1" source="c6" target="c3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- MenuPanel --uses--> GameModel -->
+        <mxCell id="e8" value="«uses»" style="endArrow=open;endFill=0;dashed=1;strokeWidth=1;fontSize=10;" edge="1" parent="1" source="c7" target="c3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- GamePanel extends BackgroundPanel -->
+        <mxCell id="e9" style="endArrow=block;endFill=0;strokeWidth=1;endSize=14;" edge="1" parent="1" source="c6" target="c11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- MenuPanel extends BackgroundPanel -->
+        <mxCell id="e10" style="endArrow=block;endFill=0;strokeWidth=1;endSize=14;" edge="1" parent="1" source="c7" target="c11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- GamePanel ◆--1-- BoardPanel -->
+        <mxCell id="e11" value="1" style="endArrow=diamondThin;endFill=1;startArrow=none;strokeWidth=1;fontSize=10;endSize=12;" edge="1" parent="1" source="c8" target="c6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- BoardPanel ◆--*-- BulbView -->
+        <mxCell id="e12" value="*" style="endArrow=diamondThin;endFill=1;startArrow=none;strokeWidth=1;fontSize=10;endSize=12;" edge="1" parent="1" source="c9" target="c8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- BoardPanel ◆--*-- LeverView -->
+        <mxCell id="e13" value="*" style="endArrow=diamondThin;endFill=1;startArrow=none;strokeWidth=1;fontSize=10;endSize=12;" edge="1" parent="1" source="c10" target="c8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- GameModel ◆-- GameMode (inner enum) -->
+        <mxCell id="e14" value="«inner»" style="endArrow=diamondThin;endFill=1;startArrow=none;strokeWidth=1;fontSize=10;endSize=12;" edge="1" parent="1" source="c4" target="c3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- GameModel ◆-- Difficulty (inner enum) -->
+        <mxCell id="e15" value="«inner»" style="endArrow=diamondThin;endFill=1;startArrow=none;strokeWidth=1;fontSize=10;endSize=12;" edge="1" parent="1" source="c5" target="c3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- gui.LightsOutGUI --uses--> gui.ColorTheme -->
+        <mxCell id="e16" value="«uses»" style="endArrow=open;endFill=0;dashed=1;strokeWidth=1;fontSize=10;" edge="1" parent="1" source="c14" target="c13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

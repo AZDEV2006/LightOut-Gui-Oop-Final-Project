@@ -16,8 +16,8 @@ public class GamePanel extends BackgroundPanel {
       private JLabel lvLabel, movesLabel, timeLabel, modeLabel;
       private JButton resetBtn, hintBtn, pauseBtn;
 
-      private JLabel xpLvLabel, xpValLabel;
-      private JPanel xpBarFill, xpBarBg;
+      private JLabel progressLabel;
+      private JPanel progressBarFill, progressBarBg;
 
       private int hintIndex = -1;
       private Timer hintTimer;
@@ -44,10 +44,10 @@ public class GamePanel extends BackgroundPanel {
                         BorderFactory.createLineBorder(Theme.LEVER_BASE, 1),
                         BorderFactory.createEmptyBorder(4, 12, 4, 12)));
 
-            lvLabel    = Theme.makeLabel("LV 1",      12, Theme.TEXT_DIM);
-            movesLabel = Theme.makeLabel("MOVES 0",   12, Theme.TEXT_DIM);
-            timeLabel  = Theme.makeLabel("TIME 00:00",12, Theme.TEXT_DIM);
-            modeLabel  = Theme.makeLabel("CLASSIC",   12, Theme.TEXT_DIM);
+            lvLabel = Theme.makeLabel("LV 1", 12, Theme.TEXT_DIM);
+            movesLabel = Theme.makeLabel("MOVES 0", 12, Theme.TEXT_DIM);
+            timeLabel = Theme.makeLabel("TIME 00:00", 12, Theme.TEXT_DIM);
+            modeLabel = Theme.makeLabel("CLASSIC", 12, Theme.TEXT_DIM);
 
             hud.add(lvLabel);
             hud.add(movesLabel);
@@ -84,31 +84,29 @@ public class GamePanel extends BackgroundPanel {
 
             bottom.add(Box.createVerticalStrut(8));
 
-            JPanel xpRow = new JPanel(new BorderLayout(8, 0));
-            xpRow.setOpaque(false);
-            xpRow.setMaximumSize(new Dimension(320, 20));
-            xpRow.setAlignmentX(CENTER_ALIGNMENT);
+            JPanel progressRow = new JPanel(new BorderLayout(8, 0));
+            progressRow.setOpaque(false);
+            progressRow.setMaximumSize(new Dimension(320, 20));
+            progressRow.setAlignmentX(CENTER_ALIGNMENT);
 
-            xpLvLabel = Theme.makeLabel("LV 1",   10, Theme.TEXT_DIM);
-            xpValLabel = Theme.makeLabel("0/100", 10, Theme.TEXT_DIM);
+            progressLabel = Theme.makeLabel("0 / 25 CLEARED", 10, Theme.TEXT_DIM);
 
-            xpBarBg = new JPanel(new BorderLayout());
-            xpBarBg.setBackground(Theme.XP_BAR_BG);
-            xpBarBg.setPreferredSize(new Dimension(200, 10));
+            progressBarBg = new JPanel(new BorderLayout());
+            progressBarBg.setBackground(Theme.PROGRESS_BAR_BG);
+            progressBarBg.setPreferredSize(new Dimension(200, 10));
 
-            xpBarFill = new JPanel();
-            xpBarFill.setBackground(Theme.XP_BAR_FILL1);
-            xpBarFill.setPreferredSize(new Dimension(0, 10));
-            xpBarBg.add(xpBarFill, BorderLayout.WEST);
+            progressBarFill = new JPanel();
+            progressBarFill.setBackground(Theme.PROGRESS_BAR_FILL);
+            progressBarFill.setPreferredSize(new Dimension(0, 10));
+            progressBarBg.add(progressBarFill, BorderLayout.WEST);
 
-            xpRow.add(xpLvLabel,  BorderLayout.WEST);
-            xpRow.add(xpBarBg,    BorderLayout.CENTER);
-            xpRow.add(xpValLabel, BorderLayout.EAST);
+            progressRow.add(progressBarBg, BorderLayout.CENTER);
+            progressRow.add(progressLabel, BorderLayout.EAST);
 
-            JPanel xpWrap = new JPanel(new FlowLayout(FlowLayout.CENTER));
-            xpWrap.setOpaque(false);
-            xpWrap.add(xpRow);
-            bottom.add(xpWrap);
+            JPanel progressWrap = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            progressWrap.setOpaque(false);
+            progressWrap.add(progressRow);
+            bottom.add(progressWrap);
 
             add(bottom, BorderLayout.SOUTH);
       }
@@ -126,12 +124,13 @@ public class GamePanel extends BackgroundPanel {
                         this::onLeverClicked);
             boardPanel.updateFromModel(model);
             updateHUD();
-            updateXPBar();
+            updateProgressBar();
 
             hintBtn.setText("HINT (" + model.getHints() + ")");
             pauseBtn.setText("PAUSE");
 
-            if (gameTimer != null) gameTimer.stop();
+            if (gameTimer != null)
+                  gameTimer.stop();
             gameTimer = new Timer(100, e -> {
                   if (!model.isPaused() && !model.isDone()) {
                         model.updateElapsed();
@@ -147,7 +146,8 @@ public class GamePanel extends BackgroundPanel {
       }
 
       private void onLeverClicked(java.awt.event.ActionEvent e) {
-            if (model.isDone() || model.isPaused()) return;
+            if (model.isDone() || model.isPaused())
+                  return;
 
             int index = Integer.parseInt(e.getActionCommand());
             model.doToggle(index, true);
@@ -157,14 +157,16 @@ public class GamePanel extends BackgroundPanel {
             updateHUD();
 
             if (model.isSolved()) {
-                  if (gameTimer != null) gameTimer.stop();
+                  if (gameTimer != null)
+                        gameTimer.stop();
                   model.setDone(true);
                   showResult(true);
             }
       }
 
       private void resetGame() {
-            if (hintTimer != null) hintTimer.stop();
+            if (hintTimer != null)
+                  hintTimer.stop();
             hintIndex = -1;
             showingResult = false;
             removePauseOverlay();
@@ -178,7 +180,8 @@ public class GamePanel extends BackgroundPanel {
             boardPanel.updateFromModel(model);
             updateHUD();
             pauseBtn.setText("PAUSE");
-            if (gameTimer != null) gameTimer.stop();
+            if (gameTimer != null)
+                  gameTimer.stop();
             gameTimer = new Timer(100, e -> {
                   if (!model.isPaused() && !model.isDone()) {
                         model.updateElapsed();
@@ -194,16 +197,20 @@ public class GamePanel extends BackgroundPanel {
       }
 
       private void useHint() {
-            if (model.isDone() || model.isPaused()) return;
-            if (!model.useHint()) return;
+            if (model.isDone() || model.isPaused())
+                  return;
+            if (!model.useHint())
+                  return;
 
             hintBtn.setText("HINT (" + model.getHints() + ")");
             hintIndex = model.getHint();
             boardPanel.showHint(hintIndex, true);
 
-            if (hintTimer != null) hintTimer.stop();
+            if (hintTimer != null)
+                  hintTimer.stop();
             hintTimer = new Timer(300, new ActionListener() {
                   int count = 0;
+
                   @Override
                   public void actionPerformed(java.awt.event.ActionEvent e) {
                         count++;
@@ -219,10 +226,12 @@ public class GamePanel extends BackgroundPanel {
       }
 
       private void togglePause() {
-            if (model.isDone()) return;
+            if (model.isDone())
+                  return;
             model.pause();
             if (model.isPaused()) {
-                  if (gameTimer != null) gameTimer.stop();
+                  if (gameTimer != null)
+                        gameTimer.stop();
                   pauseBtn.setText("RESUME");
                   showPauseOverlay();
             } else {
@@ -253,17 +262,18 @@ public class GamePanel extends BackgroundPanel {
             }
       }
 
-      private void updateXPBar() {
-            xpLvLabel.setText("LV " + model.getPlayerLevel());
-            xpValLabel.setText(model.getCurrentXP() + "/" + model.getXpToNext());
-            double progress = model.getXpProgress();
+      private void updateProgressBar() {
+            int cleared = model.getLevelsCleared();
+            progressLabel.setText(cleared + " / 25 CLEARED");
+            double progress = model.getStageProgress();
             int barWidth = (int) (200 * Math.max(0, Math.min(1, progress)));
-            xpBarFill.setPreferredSize(new Dimension(barWidth, 10));
-            xpBarBg.revalidate();
+            progressBarFill.setPreferredSize(new Dimension(barWidth, 10));
+            progressBarBg.revalidate();
       }
 
       private void showPauseOverlay() {
-            if (pauseOverlay != null) return;
+            if (pauseOverlay != null)
+                  return;
 
             pauseOverlay = new JPanel() {
                   @Override
@@ -298,7 +308,8 @@ public class GamePanel extends BackgroundPanel {
             menuBtn.setMaximumSize(new Dimension(180, 40));
             menuBtn.addActionListener(e -> {
                   removePauseOverlay();
-                  if (gameTimer != null) gameTimer.stop();
+                  if (gameTimer != null)
+                        gameTimer.stop();
                   onMenu.run();
             });
             box.add(menuBtn);
@@ -321,23 +332,18 @@ public class GamePanel extends BackgroundPanel {
 
       private void showResult(boolean won) {
             showingResult = true;
-            int xp = 0, stars = 0;
-            boolean leveledUp = false;
+            int stars = 0;
 
             if (won) {
-                  xp = model.calcXP();
                   stars = model.calcStars();
                   model.recordWin();
-                  leveledUp = model.addXP(xp);
             } else {
                   model.recordLoss();
             }
 
-            updateXPBar();
+            updateProgressBar();
 
-            final int fxp = xp;
             final int fstars = stars;
-            final boolean flvUp = leveledUp;
 
             resultOverlay = new JPanel() {
                   @Override
@@ -365,7 +371,8 @@ public class GamePanel extends BackgroundPanel {
 
             if (won) {
                   StringBuilder starStr = new StringBuilder();
-                  for (int i = 0; i < 3; i++) starStr.append(i < fstars ? "\u2605 " : "\u2606 ");
+                  for (int i = 0; i < 3; i++)
+                        starStr.append(i < fstars ? "\u2605 " : "\u2606 ");
                   JLabel starLbl = Theme.makeLabel(starStr.toString().trim(), 22,
                               fstars >= 3 ? Theme.STAR_FILLED : Theme.TEXT_DIM);
                   starLbl.setAlignmentX(CENTER_ALIGNMENT);
@@ -387,16 +394,10 @@ public class GamePanel extends BackgroundPanel {
                   card.add(hintsLbl);
                   card.add(Box.createVerticalStrut(8));
 
-                  JLabel xpLbl = Theme.makeLabel("+" + fxp + " XP", 18, Theme.XP_BAR_FILL1);
-                  xpLbl.setAlignmentX(CENTER_ALIGNMENT);
-                  card.add(xpLbl);
-
-                  if (flvUp) {
-                        JLabel lvUpLbl = Theme.makeLabel(
-                                    "LEVEL UP! \u2192 Lv." + model.getPlayerLevel(), 14, Theme.WIN_COLOR);
-                        lvUpLbl.setAlignmentX(CENTER_ALIGNMENT);
-                        card.add(lvUpLbl);
-                  }
+                  JLabel progressLbl = Theme.makeLabel(
+                              "Progress: " + model.getLevelsCleared() + " / 25", 14, Theme.PROGRESS_BAR_FILL);
+                  progressLbl.setAlignmentX(CENTER_ALIGNMENT);
+                  card.add(progressLbl);
             } else {
                   JLabel lostLbl = Theme.makeLabel("Better luck next time!", 13, Theme.TEXT_DIM);
                   lostLbl.setAlignmentX(CENTER_ALIGNMENT);
@@ -423,13 +424,17 @@ public class GamePanel extends BackgroundPanel {
             }
 
             JButton retryBtn = Theme.makeButton("RETRY");
-            retryBtn.addActionListener(e -> { removeResultOverlay(); startGame(); });
+            retryBtn.addActionListener(e -> {
+                  removeResultOverlay();
+                  startGame();
+            });
             btnRow.add(retryBtn);
 
             JButton menuBtn = Theme.makeButton("MENU");
             menuBtn.addActionListener(e -> {
                   removeResultOverlay();
-                  if (gameTimer != null) gameTimer.stop();
+                  if (gameTimer != null)
+                        gameTimer.stop();
                   onMenu.run();
             });
             btnRow.add(menuBtn);
@@ -453,8 +458,10 @@ public class GamePanel extends BackgroundPanel {
       }
 
       public void stopTimers() {
-            if (gameTimer != null) gameTimer.stop();
-            if (hintTimer != null) hintTimer.stop();
+            if (gameTimer != null)
+                  gameTimer.stop();
+            if (hintTimer != null)
+                  hintTimer.stop();
             removePauseOverlay();
             removeResultOverlay();
       }

@@ -12,9 +12,10 @@ public class MenuPanel extends BackgroundPanel {
       private final CardLayout menuCards = new CardLayout();
       private final JPanel cardPanel = new JPanel(menuCards);
 
-      private JLabel lvLabel, xpLabel;
-      private JPanel xpBarFill;
-      private JPanel xpBarBg;
+      private JLabel progressLabel;
+      private JLabel modeInfoLabel;
+      private JPanel progressBarFill;
+      private JPanel progressBarBg;
 
       private GameModel.GameMode selectedMode;
       private final JPanel[] modeCards = new JPanel[4];
@@ -76,23 +77,23 @@ public class MenuPanel extends BackgroundPanel {
             infoCard.setMaximumSize(new Dimension(280, 80));
             infoCard.setAlignmentX(CENTER_ALIGNMENT);
 
-            lvLabel = Theme.makeLabel("LEVEL 1  \u00b7  0 XP", 12, Theme.TEXT_DIM);
-            lvLabel.setAlignmentX(CENTER_ALIGNMENT);
-            infoCard.add(lvLabel);
+            progressLabel = Theme.makeLabel("PROGRESS: 0 / 25 CLEARED", 12, Theme.TEXT_DIM);
+            progressLabel.setAlignmentX(CENTER_ALIGNMENT);
+            infoCard.add(progressLabel);
             infoCard.add(Box.createVerticalStrut(8));
 
-            xpBarBg = new JPanel(new BorderLayout());
-            xpBarBg.setBackground(Theme.XP_BAR_BG);
-            xpBarBg.setMaximumSize(new Dimension(240, 12));
-            xpBarBg.setPreferredSize(new Dimension(240, 12));
-            xpBarBg.setAlignmentX(CENTER_ALIGNMENT);
+            progressBarBg = new JPanel(new BorderLayout());
+            progressBarBg.setBackground(Theme.PROGRESS_BAR_BG);
+            progressBarBg.setMaximumSize(new Dimension(240, 12));
+            progressBarBg.setPreferredSize(new Dimension(240, 12));
+            progressBarBg.setAlignmentX(CENTER_ALIGNMENT);
 
-            xpBarFill = new JPanel();
-            xpBarFill.setBackground(Theme.XP_BAR_FILL1);
-            xpBarFill.setPreferredSize(new Dimension(0, 12));
-            xpBarBg.add(xpBarFill, BorderLayout.WEST);
+            progressBarFill = new JPanel();
+            progressBarFill.setBackground(Theme.PROGRESS_BAR_FILL);
+            progressBarFill.setPreferredSize(new Dimension(0, 12));
+            progressBarBg.add(progressBarFill, BorderLayout.WEST);
 
-            infoCard.add(xpBarBg);
+            infoCard.add(progressBarBg);
             panel.add(infoCard);
             panel.add(Box.createVerticalStrut(24));
 
@@ -118,22 +119,20 @@ public class MenuPanel extends BackgroundPanel {
       }
 
       private void updatePlayerInfo() {
-            if (lvLabel != null) {
-                  lvLabel.setText("LEVEL " + model.getPlayerLevel() + "  \u00b7  " + model.getTotalXP() + " XP");
+            if (progressLabel != null) {
+                  progressLabel.setText("PROGRESS: " + model.getLevelsCleared() + " / 25 CLEARED");
             }
-            if (xpBarFill != null && xpBarBg != null) {
-                  double progress = model.getXpProgress();
+            if (progressBarFill != null && progressBarBg != null) {
+                  double progress = model.getStageProgress();
                   int barWidth = (int) (240 * Math.max(0, Math.min(1, progress)));
-                  xpBarFill.setPreferredSize(new Dimension(barWidth, 12));
-                  xpBarBg.revalidate();
+                  progressBarFill.setPreferredSize(new Dimension(barWidth, 12));
+                  progressBarBg.revalidate();
             }
       }
 
       private void showProfile() {
             JOptionPane.showMessageDialog(this,
-                        "Level: " + model.getPlayerLevel()
-                                    + "\nTotal XP: " + model.getTotalXP()
-                                    + "\nGames: " + model.getGamesPlayed() + " (Won: " + model.getGamesWon() + ")"
+                        "Games: " + model.getGamesPlayed() + " (Won: " + model.getGamesWon() + ")"
                                     + "\nHints: " + model.getHints()
                                     + "\nLevels cleared: " + model.getLevelsCleared(),
                         "Profile", JOptionPane.INFORMATION_MESSAGE);
@@ -361,9 +360,9 @@ public class MenuPanel extends BackgroundPanel {
             panel.add(title);
             panel.add(Box.createVerticalStrut(6));
 
-            xpLabel = Theme.makeLabel("", 11, Theme.TEXT_DIM);
-            xpLabel.setAlignmentX(CENTER_ALIGNMENT);
-            panel.add(xpLabel);
+            modeInfoLabel = Theme.makeLabel("", 11, Theme.TEXT_DIM);
+            modeInfoLabel.setAlignmentX(CENTER_ALIGNMENT);
+            panel.add(modeInfoLabel);
             panel.add(Box.createVerticalStrut(16));
 
             JPanel lvGrid = new JPanel(new GridLayout(5, 5, 8, 8));
@@ -410,8 +409,8 @@ public class MenuPanel extends BackgroundPanel {
       }
 
       private void updateLevelButtons() {
-            if (xpLabel != null)
-                  xpLabel.setText(selectedMode.name.toUpperCase());
+            if (modeInfoLabel != null)
+                  modeInfoLabel.setText(selectedMode.name.toUpperCase());
             for (int i = 0; i < 25; i++) {
                   int lv = i + 1;
                   boolean unlocked = model.isLevelUnlocked(lv);
@@ -440,7 +439,7 @@ public class MenuPanel extends BackgroundPanel {
                   if (unlocked) {
                         btn.setBackground(Theme.BG_CARD);
                         btn.setBorder(BorderFactory.createLineBorder(
-                                    lv == model.getCurrentLevel() ? Theme.XP_BAR_FILL1 : Theme.LEVER_BASE, 2));
+                                    lv == model.getCurrentLevel() ? Theme.PROGRESS_BAR_FILL : Theme.LEVER_BASE, 2));
                         numLbl.setForeground(Theme.TEXT_LIGHT);
                         starLbl.setForeground(stars > 0 ? Theme.STAR_FILLED : Theme.TEXT_DIM);
                         sizeLbl.setForeground(Theme.TEXT_DIM);

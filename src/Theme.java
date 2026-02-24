@@ -35,9 +35,9 @@ public final class Theme {
       public static final Color BTN_BORDER = new Color(60, 54, 70);
       public static final Color BTN_TEXT = new Color(220, 215, 230);
 
-      public static final Color XP_BAR_BG = new Color(50, 46, 58);
-      public static final Color XP_BAR_FILL1 = new Color(243, 156, 18);
-      public static final Color XP_BAR_FILL2 = new Color(230, 126, 34);
+      public static final Color PROGRESS_BAR_BG = new Color(50, 46, 58);
+      public static final Color PROGRESS_BAR_FILL = new Color(243, 156, 18);
+      public static final Color PROGRESS_BAR_FILL2 = new Color(230, 126, 34);
 
       public static final Color STAR_FILLED = new Color(241, 196, 15);
       public static final Color STAR_EMPTY = new Color(70, 65, 80);
