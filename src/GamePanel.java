@@ -14,7 +14,6 @@ public class GamePanel extends BackgroundPanel {
       private Timer gameTimer;
 
       private JLabel lvLabel, movesLabel, timeLabel, modeLabel;
-
       private JButton resetBtn, hintBtn, pauseBtn;
 
       private JLabel xpLvLabel, xpValLabel;
@@ -45,10 +44,10 @@ public class GamePanel extends BackgroundPanel {
                         BorderFactory.createLineBorder(Theme.LEVER_BASE, 1),
                         BorderFactory.createEmptyBorder(4, 12, 4, 12)));
 
-            lvLabel = Theme.makeLabel("LV 1", 12, Theme.TEXT_DIM);
-            movesLabel = Theme.makeLabel("MOVES 0", 12, Theme.TEXT_DIM);
-            timeLabel = Theme.makeLabel("TIME 00:00", 12, Theme.TEXT_DIM);
-            modeLabel = Theme.makeLabel("CLASSIC", 12, Theme.TEXT_DIM);
+            lvLabel    = Theme.makeLabel("LV 1",      12, Theme.TEXT_DIM);
+            movesLabel = Theme.makeLabel("MOVES 0",   12, Theme.TEXT_DIM);
+            timeLabel  = Theme.makeLabel("TIME 00:00",12, Theme.TEXT_DIM);
+            modeLabel  = Theme.makeLabel("CLASSIC",   12, Theme.TEXT_DIM);
 
             hud.add(lvLabel);
             hud.add(movesLabel);
@@ -90,7 +89,7 @@ public class GamePanel extends BackgroundPanel {
             xpRow.setMaximumSize(new Dimension(320, 20));
             xpRow.setAlignmentX(CENTER_ALIGNMENT);
 
-            xpLvLabel = Theme.makeLabel("LV 1", 10, Theme.TEXT_DIM);
+            xpLvLabel = Theme.makeLabel("LV 1",   10, Theme.TEXT_DIM);
             xpValLabel = Theme.makeLabel("0/100", 10, Theme.TEXT_DIM);
 
             xpBarBg = new JPanel(new BorderLayout());
@@ -102,8 +101,8 @@ public class GamePanel extends BackgroundPanel {
             xpBarFill.setPreferredSize(new Dimension(0, 10));
             xpBarBg.add(xpBarFill, BorderLayout.WEST);
 
-            xpRow.add(xpLvLabel, BorderLayout.WEST);
-            xpRow.add(xpBarBg, BorderLayout.CENTER);
+            xpRow.add(xpLvLabel,  BorderLayout.WEST);
+            xpRow.add(xpBarBg,    BorderLayout.CENTER);
             xpRow.add(xpValLabel, BorderLayout.EAST);
 
             JPanel xpWrap = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -120,7 +119,11 @@ public class GamePanel extends BackgroundPanel {
             removeResultOverlay();
 
             model.initBoard();
-            boardPanel.buildBoard(model.getLightCount(), model.getCurrentDifficulty().isGrid(), this::onLeverClicked);
+            boardPanel.buildBoard(
+                        model.getLightCount(),
+                        model.getLeverCount(),
+                        model.getCurrentDifficulty().isGrid(),
+                        this::onLeverClicked);
             boardPanel.updateFromModel(model);
             updateHUD();
             updateXPBar();
@@ -128,8 +131,7 @@ public class GamePanel extends BackgroundPanel {
             hintBtn.setText("HINT (" + model.getHints() + ")");
             pauseBtn.setText("PAUSE");
 
-            if (gameTimer != null)
-                  gameTimer.stop();
+            if (gameTimer != null) gameTimer.stop();
             gameTimer = new Timer(100, e -> {
                   if (!model.isPaused() && !model.isDone()) {
                         model.updateElapsed();
@@ -145,8 +147,7 @@ public class GamePanel extends BackgroundPanel {
       }
 
       private void onLeverClicked(java.awt.event.ActionEvent e) {
-            if (model.isDone() || model.isPaused())
-                  return;
+            if (model.isDone() || model.isPaused()) return;
 
             int index = Integer.parseInt(e.getActionCommand());
             model.doToggle(index, true);
@@ -156,27 +157,28 @@ public class GamePanel extends BackgroundPanel {
             updateHUD();
 
             if (model.isSolved()) {
-                  if (gameTimer != null)
-                        gameTimer.stop();
+                  if (gameTimer != null) gameTimer.stop();
                   model.setDone(true);
                   showResult(true);
             }
       }
 
       private void resetGame() {
-            if (hintTimer != null)
-                  hintTimer.stop();
+            if (hintTimer != null) hintTimer.stop();
             hintIndex = -1;
             showingResult = false;
             removePauseOverlay();
             removeResultOverlay();
             model.initBoard();
-            boardPanel.buildBoard(model.getLightCount(), model.getCurrentDifficulty().isGrid(), this::onLeverClicked);
+            boardPanel.buildBoard(
+                        model.getLightCount(),
+                        model.getLeverCount(),
+                        model.getCurrentDifficulty().isGrid(),
+                        this::onLeverClicked);
             boardPanel.updateFromModel(model);
             updateHUD();
             pauseBtn.setText("PAUSE");
-            if (gameTimer != null)
-                  gameTimer.stop();
+            if (gameTimer != null) gameTimer.stop();
             gameTimer = new Timer(100, e -> {
                   if (!model.isPaused() && !model.isDone()) {
                         model.updateElapsed();
@@ -192,20 +194,16 @@ public class GamePanel extends BackgroundPanel {
       }
 
       private void useHint() {
-            if (model.isDone() || model.isPaused())
-                  return;
-            if (!model.useHint())
-                  return;
+            if (model.isDone() || model.isPaused()) return;
+            if (!model.useHint()) return;
 
             hintBtn.setText("HINT (" + model.getHints() + ")");
             hintIndex = model.getHint();
             boardPanel.showHint(hintIndex, true);
 
-            if (hintTimer != null)
-                  hintTimer.stop();
+            if (hintTimer != null) hintTimer.stop();
             hintTimer = new Timer(300, new ActionListener() {
                   int count = 0;
-
                   @Override
                   public void actionPerformed(java.awt.event.ActionEvent e) {
                         count++;
@@ -221,13 +219,10 @@ public class GamePanel extends BackgroundPanel {
       }
 
       private void togglePause() {
-            if (model.isDone())
-                  return;
+            if (model.isDone()) return;
             model.pause();
-
             if (model.isPaused()) {
-                  if (gameTimer != null)
-                        gameTimer.stop();
+                  if (gameTimer != null) gameTimer.stop();
                   pauseBtn.setText("RESUME");
                   showPauseOverlay();
             } else {
@@ -249,9 +244,8 @@ public class GamePanel extends BackgroundPanel {
             if (diff.hasTimer()) {
                   long remainingMs = Math.max(0, diff.timeLimit * 1000L - model.getElapsed());
                   long sec = remainingMs / 1000;
-                  String timeStr = String.format("TIME %02d:%02d", sec / 60, sec % 60);
                   timeLabel.setForeground(remainingMs < 10000 ? Theme.LOSE_COLOR : Theme.TEXT_DIM);
-                  timeLabel.setText(timeStr);
+                  timeLabel.setText(String.format("TIME %02d:%02d", sec / 60, sec % 60));
             } else {
                   long sec = model.getElapsed() / 1000;
                   timeLabel.setForeground(Theme.TEXT_DIM);
@@ -291,7 +285,7 @@ public class GamePanel extends BackgroundPanel {
 
             box.add(Box.createVerticalStrut(20));
 
-            JButton resumeBtn = Theme.makeButton("▶  RESUME");
+            JButton resumeBtn = Theme.makeButton("\u25b6  RESUME");
             resumeBtn.setAlignmentX(CENTER_ALIGNMENT);
             resumeBtn.setMaximumSize(new Dimension(180, 40));
             resumeBtn.addActionListener(e -> togglePause());
@@ -316,7 +310,7 @@ public class GamePanel extends BackgroundPanel {
                   root.setGlassPane(pauseOverlay);
                   pauseOverlay.setVisible(true);
             }
-            }     
+      }
 
       private void removePauseOverlay() {
             if (pauseOverlay != null) {
@@ -327,7 +321,6 @@ public class GamePanel extends BackgroundPanel {
 
       private void showResult(boolean won) {
             showingResult = true;
-
             int xp = 0, stars = 0;
             boolean leveledUp = false;
 
@@ -364,23 +357,19 @@ public class GamePanel extends BackgroundPanel {
                         BorderFactory.createEmptyBorder(20, 30, 20, 30)));
 
             JLabel titleLbl = Theme.makeLabel(
-                        won ? "★ VICTORY! ★" : "✖ TIME'S UP!",
+                        won ? "\u2605 VICTORY! \u2605" : "\u2716 TIME'S UP!",
                         26, won ? Theme.WIN_COLOR : Theme.LOSE_COLOR);
             titleLbl.setAlignmentX(CENTER_ALIGNMENT);
             card.add(titleLbl);
-
             card.add(Box.createVerticalStrut(12));
 
             if (won) {
                   StringBuilder starStr = new StringBuilder();
-                  for (int i = 0; i < 3; i++) {
-                        starStr.append(i < fstars ? "★ " : "☆ ");
-                  }
+                  for (int i = 0; i < 3; i++) starStr.append(i < fstars ? "\u2605 " : "\u2606 ");
                   JLabel starLbl = Theme.makeLabel(starStr.toString().trim(), 22,
                               fstars >= 3 ? Theme.STAR_FILLED : Theme.TEXT_DIM);
                   starLbl.setAlignmentX(CENTER_ALIGNMENT);
                   card.add(starLbl);
-
                   card.add(Box.createVerticalStrut(12));
 
                   long sec = model.getElapsed() / 1000;
@@ -396,7 +385,6 @@ public class GamePanel extends BackgroundPanel {
                   JLabel hintsLbl = Theme.makeLabel("Hints: " + model.getHintsUsed(), 13, Theme.TEXT_DIM);
                   hintsLbl.setAlignmentX(CENTER_ALIGNMENT);
                   card.add(hintsLbl);
-
                   card.add(Box.createVerticalStrut(8));
 
                   JLabel xpLbl = Theme.makeLabel("+" + fxp + " XP", 18, Theme.XP_BAR_FILL1);
@@ -405,7 +393,7 @@ public class GamePanel extends BackgroundPanel {
 
                   if (flvUp) {
                         JLabel lvUpLbl = Theme.makeLabel(
-                                    "LEVEL UP! → Lv." + model.getPlayerLevel(), 14, Theme.WIN_COLOR);
+                                    "LEVEL UP! \u2192 Lv." + model.getPlayerLevel(), 14, Theme.WIN_COLOR);
                         lvUpLbl.setAlignmentX(CENTER_ALIGNMENT);
                         card.add(lvUpLbl);
                   }
@@ -421,7 +409,7 @@ public class GamePanel extends BackgroundPanel {
             btnRow.setOpaque(false);
 
             if (won) {
-                  JButton nextBtn = Theme.makeButton("NEXT ▶");
+                  JButton nextBtn = Theme.makeButton("NEXT \u25b6");
                   nextBtn.addActionListener(e -> {
                         removeResultOverlay();
                         if (model.getCurrentMode() == GameModel.GameMode.ENDLESS || model.getCurrentLevel() < 25) {
@@ -435,17 +423,13 @@ public class GamePanel extends BackgroundPanel {
             }
 
             JButton retryBtn = Theme.makeButton("RETRY");
-            retryBtn.addActionListener(e -> {
-                  removeResultOverlay();
-                  startGame();
-            });
+            retryBtn.addActionListener(e -> { removeResultOverlay(); startGame(); });
             btnRow.add(retryBtn);
 
             JButton menuBtn = Theme.makeButton("MENU");
             menuBtn.addActionListener(e -> {
                   removeResultOverlay();
-                  if (gameTimer != null)
-                        gameTimer.stop();
+                  if (gameTimer != null) gameTimer.stop();
                   onMenu.run();
             });
             btnRow.add(menuBtn);
@@ -469,12 +453,9 @@ public class GamePanel extends BackgroundPanel {
       }
 
       public void stopTimers() {
-            if (gameTimer != null)
-                  gameTimer.stop();
-            if (hintTimer != null)
-                  hintTimer.stop();
+            if (gameTimer != null) gameTimer.stop();
+            if (hintTimer != null) hintTimer.stop();
             removePauseOverlay();
             removeResultOverlay();
       }
-
 }
