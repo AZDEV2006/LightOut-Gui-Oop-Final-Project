@@ -119,15 +119,11 @@ public class GamePanel extends BackgroundPanel {
             removeResultOverlay();
 
             model.initBoard();
-<<<<<<< Updated upstream
-            boardPanel.buildBoard(model.getLightCount(), model.getCurrentDifficulty().isGrid(), this::onLeverClicked);
-=======
             boardPanel.buildBoard(
                         model.getLightCount(),
                         model.getLeverCount(),
                         model.getCurrentDifficulty().isGrid(),
                         this::onLeverClicked);
->>>>>>> Stashed changes
             boardPanel.updateFromModel(model);
             updateHUD();
             updateXPBar();
@@ -174,15 +170,11 @@ public class GamePanel extends BackgroundPanel {
             removePauseOverlay();
             removeResultOverlay();
             model.initBoard();
-<<<<<<< Updated upstream
-            boardPanel.buildBoard(model.getLightCount(), model.getCurrentDifficulty().isGrid(), this::onLeverClicked);
-=======
             boardPanel.buildBoard(
                         model.getLightCount(),
                         model.getLeverCount(),
                         model.getCurrentDifficulty().isGrid(),
                         this::onLeverClicked);
->>>>>>> Stashed changes
             boardPanel.updateFromModel(model);
             updateHUD();
             pauseBtn.setText("PAUSE");
@@ -252,14 +244,8 @@ public class GamePanel extends BackgroundPanel {
             if (diff.hasTimer()) {
                   long remainingMs = Math.max(0, diff.timeLimit * 1000L - model.getElapsed());
                   long sec = remainingMs / 1000;
-<<<<<<< Updated upstream
-                  String timeStr = String.format("TIME %02d:%02d", sec / 60, sec % 60);
-                  timeLabel.setForeground(remainingMs < 10000 ? Theme.LOSE_COLOR : Theme.TEXT_DIM);
-                  timeLabel.setText(timeStr);
-=======
                   timeLabel.setForeground(remainingMs < 10000 ? Theme.LOSE_COLOR : Theme.TEXT_DIM);
                   timeLabel.setText(String.format("TIME %02d:%02d", sec / 60, sec % 60));
->>>>>>> Stashed changes
             } else {
                   long sec = model.getElapsed() / 1000;
                   timeLabel.setForeground(Theme.TEXT_DIM);
@@ -299,11 +285,7 @@ public class GamePanel extends BackgroundPanel {
 
             box.add(Box.createVerticalStrut(20));
 
-<<<<<<< Updated upstream
-            JButton resumeBtn = Theme.makeButton("▶  RESUME");
-=======
             JButton resumeBtn = Theme.makeButton("\u25b6  RESUME");
->>>>>>> Stashed changes
             resumeBtn.setAlignmentX(CENTER_ALIGNMENT);
             resumeBtn.setMaximumSize(new Dimension(180, 40));
             resumeBtn.addActionListener(e -> togglePause());
@@ -328,7 +310,7 @@ public class GamePanel extends BackgroundPanel {
                   root.setGlassPane(pauseOverlay);
                   pauseOverlay.setVisible(true);
             }
-            }     
+      }
 
       private void removePauseOverlay() {
             if (pauseOverlay != null) {
@@ -476,9 +458,4 @@ public class GamePanel extends BackgroundPanel {
             removePauseOverlay();
             removeResultOverlay();
       }
-<<<<<<< Updated upstream
-
 }
-=======
-}
->>>>>>> Stashed changes

@@ -18,33 +18,6 @@ public class GameModel {
       }
 
       public enum Difficulty {
-<<<<<<< Updated upstream
-            EASY("Easy", 5, 3, 0, 3), 
-            NORMAL("Normal", 25, 5, 0, 1), 
-            HARD("Hard", 25, 9, 180, 0); 
-
-            public final String name;
-            public final int lightCount;
-            public final int shuffleMoves;
-            public final int timeLimit; 
-            public final int hintsAllowed;
-
-            Difficulty(String n, int lc, int sm, int tl, int h) {
-                  name = n;
-                  lightCount = lc;
-                  shuffleMoves = sm;
-                  timeLimit = tl;
-                  hintsAllowed = h;
-            }
-
-            public boolean isGrid() {
-                  return this == NORMAL || this == HARD;
-            }
-
-            public boolean hasTimer() {
-                  return timeLimit > 0;
-            }
-=======
             EASY("Easy",     5, 5, 3,   0, 3),
             NORMAL("Normal", 12, 7, 4,  0, 1),
             HARD("Hard",     25, 14, 8, 180, 0);
@@ -63,7 +36,6 @@ public class GameModel {
 
             public boolean isGrid()   { return this == NORMAL || this == HARD; }
             public boolean hasTimer() { return timeLimit > 0; }
->>>>>>> Stashed changes
       }
 
       private int playerLevel = 1;
@@ -121,16 +93,10 @@ public class GameModel {
 
       public void initBoard() {
             lightCount = currentDifficulty.lightCount;
-<<<<<<< Updated upstream
-            difficulty = currentDifficulty.shuffleMoves;
-            timeLimit = currentDifficulty.timeLimit;
-            hints = currentDifficulty.hintsAllowed;
-=======
             leverCount = currentDifficulty.leverCount;
             difficulty  = currentDifficulty.shuffleMoves;
             timeLimit   = currentDifficulty.timeLimit;
             hints       = currentDifficulty.hintsAllowed;
->>>>>>> Stashed changes
             lights = new boolean[lightCount];
             Arrays.fill(lights, false);
 
@@ -138,17 +104,9 @@ public class GameModel {
 
             Random rng = new Random();
             for (int i = 0; i < difficulty; i++) {
-<<<<<<< Updated upstream
-                  doToggle(rng.nextInt(lightCount), false);
-=======
                   doToggle(rng.nextInt(leverCount), false);
->>>>>>> Stashed changes
             }
-            if (isSolved()) doToggle(0, false);
-
-            moves = 0; hintsUsed = 0; done = false; paused = false;
             startTime = System.currentTimeMillis();
-            elapsed = 0;
       }
 
       private void generateConnections() {
@@ -248,100 +206,9 @@ public class GameModel {
       }
 
       public void pause() {
-<<<<<<< Updated upstream
-            if (done)
-                  return;
-            if (paused) {
-                  paused = false;
-                  startTime = System.currentTimeMillis() - elapsed;
-            } else {
-                  paused = true;
-            }
-      }
-
-      public int getPlayerLevel() {
-            return playerLevel;
-      }
-
-      public int getTotalXP() {
-            return totalXP;
-      }
-
-      public int getCurrentXP() {
-            return currentXP;
-      }
-
-      public int getXpToNext() {
-            return xpToNext;
-      }
-
-      public int getGamesPlayed() {
-            return gamesPlayed;
-      }
-
-      public int getGamesWon() {
-            return gamesWon;
-      }
-
-      public int getHints() {
-            return hints;
-      }
-
-      public int getMaxUnlocked() {
-            return maxUnlocked;
-      }
-
-      public int getLevelsCleared() {
-            return bestScores.size();
-      }
-
-      public int[] getBestForLevel(int level) {
-            return bestScores.get(level);
-      }
-
-      public GameMode getCurrentMode() {
-            return currentMode;
-      }
-
-      public int getCurrentLevel() {
-            return currentLevel;
-      }
-
-      public int getLightCount() {
-            return lightCount;
-      }
-
-      public int getMoves() {
-            return moves;
-      }
-
-      public int getHintsUsed() {
-            return hintsUsed;
-      }
-
-      public int getTimeLimit() {
-            return timeLimit;
-      }
-
-      public long getElapsed() {
-            return elapsed;
-      }
-
-      public Difficulty getCurrentDifficulty() {
-            return currentDifficulty;
-      }
-
-      public boolean isPaused() {
-            return paused;
-      }
-
-      public boolean isDone() {
-            return done;
-=======
             if (done) return;
             if (paused) { paused = false; startTime = System.currentTimeMillis() - elapsed; }
             else        { paused = true; }
->>>>>>> Stashed changes
       }
 
       public int  getPlayerLevel()   { return playerLevel; }
@@ -372,27 +239,8 @@ public class GameModel {
             return xpToNext > 0 ? (double) currentXP / xpToNext : 0;
       }
 
-<<<<<<< Updated upstream
-      public void setCurrentMode(GameMode mode) {
-            this.currentMode = mode;
-      }
-
-      public void setCurrentLevel(int level) {
-            this.currentLevel = level;
-      }
-
-      public void setDone(boolean done) {
-            this.done = done;
-      }
-
-      public void setCurrentDifficulty(Difficulty d) {
-            this.currentDifficulty = d;
-      }
-}
-=======
       public void setCurrentMode(GameMode mode)       { this.currentMode = mode; }
       public void setCurrentLevel(int level)          { this.currentLevel = level; }
       public void setDone(boolean done)               { this.done = done; }
       public void setCurrentDifficulty(Difficulty d) { this.currentDifficulty = d; }
 }
->>>>>>> Stashed changes
