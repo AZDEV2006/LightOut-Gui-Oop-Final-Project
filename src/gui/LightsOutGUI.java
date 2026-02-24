@@ -15,14 +15,14 @@ public class LightsOutGUI extends JFrame {
       }
 
       private void initUI() {
-            setTitle("Pid Switch 3 Por");
+            setTitle("Light Out");
             setSize(500, 500);
             setLocationRelativeTo(null);
             setDefaultCloseOperation(EXIT_ON_CLOSE);
             setLayout(new BorderLayout());
             getContentPane().setBackground(ColorTheme.BACKGROUND);
 
-            JLabel title = new JLabel("Pid Switch 3 Por", SwingConstants.CENTER);
+            JLabel title = new JLabel("Light Out", SwingConstants.CENTER);
             title.setForeground(ColorTheme.PRIMARY);
             title.setFont(new Font("Arial", Font.BOLD, 36));
             title.setBorder(BorderFactory.createEmptyBorder(40, 10, 20, 10));
