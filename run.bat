@@ -1,6 +1,6 @@
 @echo off
 echo ===============================
-echo   Pid Switch 3 Por Build
+echo   Light Out Build
 echo ===============================
 
 set SRC_DIR=src
@@ -27,7 +27,7 @@ if %errorlevel% neq 0 (
 
 echo Compilation successful
 
-echo Launching Pid Switch 3 Por
+echo Launching Light Out
 java -cp %BUILD_DIR% %MAIN_CLASS%
 
 if %errorlevel% neq 0 (

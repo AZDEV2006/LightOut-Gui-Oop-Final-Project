@@ -33,10 +33,10 @@ public class MenuPanel extends BackgroundPanel {
             setLayout(new BorderLayout());
 
             cardPanel.setOpaque(false);
-            cardPanel.add(buildStartScreen(),      "start");
-            cardPanel.add(buildModeScreen(),       "mode");
+            cardPanel.add(buildStartScreen(), "start");
+            cardPanel.add(buildModeScreen(), "mode");
             cardPanel.add(buildDifficultyScreen(), "difficulty");
-            cardPanel.add(buildLevelScreen(),      "level");
+            cardPanel.add(buildLevelScreen(), "level");
 
             add(cardPanel, BorderLayout.CENTER);
             showCard("start");
@@ -57,7 +57,7 @@ public class MenuPanel extends BackgroundPanel {
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
             panel.add(Box.createVerticalGlue());
 
-            JLabel title = Theme.makeLabel("Pid Switch 3 Por", 36, Theme.TEXT_TITLE);
+            JLabel title = Theme.makeLabel("Light Out", 36, Theme.TEXT_TITLE);
             title.setAlignmentX(CENTER_ALIGNMENT);
             panel.add(title);
             panel.add(Box.createVerticalStrut(6));
@@ -131,11 +131,11 @@ public class MenuPanel extends BackgroundPanel {
 
       private void showProfile() {
             JOptionPane.showMessageDialog(this,
-                        "Level: "          + model.getPlayerLevel()
-                        + "\nTotal XP: "   + model.getTotalXP()
-                        + "\nGames: "      + model.getGamesPlayed() + " (Won: " + model.getGamesWon() + ")"
-                        + "\nHints: "      + model.getHints()
-                        + "\nLevels cleared: " + model.getLevelsCleared(),
+                        "Level: " + model.getPlayerLevel()
+                                    + "\nTotal XP: " + model.getTotalXP()
+                                    + "\nGames: " + model.getGamesPlayed() + " (Won: " + model.getGamesWon() + ")"
+                                    + "\nHints: " + model.getHints()
+                                    + "\nLevels cleared: " + model.getLevelsCleared(),
                         "Profile", JOptionPane.INFORMATION_MESSAGE);
       }
 
@@ -175,16 +175,23 @@ public class MenuPanel extends BackgroundPanel {
                   card.add(desc);
 
                   card.addMouseListener(new MouseAdapter() {
-                        @Override public void mouseClicked(MouseEvent e) {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
                               selectedMode = modes[idx];
                               model.setCurrentMode(selectedMode);
                               updateModeSelection();
                         }
-                        @Override public void mouseEntered(MouseEvent e) {
+
+                        @Override
+                        public void mouseEntered(MouseEvent e) {
                               if (modes[idx] != selectedMode)
                                     card.setBorder(BorderFactory.createLineBorder(Theme.TEXT_DIM, 2));
                         }
-                        @Override public void mouseExited(MouseEvent e) { updateModeSelection(); }
+
+                        @Override
+                        public void mouseExited(MouseEvent e) {
+                              updateModeSelection();
+                        }
                   });
 
                   modeCards[i] = card;
@@ -277,15 +284,22 @@ public class MenuPanel extends BackgroundPanel {
                   card.add(hintLbl);
 
                   card.addMouseListener(new MouseAdapter() {
-                        @Override public void mouseClicked(MouseEvent e) {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
                               selectedDifficulty = diff;
                               updateDifficultySelection();
                         }
-                        @Override public void mouseEntered(MouseEvent e) {
+
+                        @Override
+                        public void mouseEntered(MouseEvent e) {
                               if (diff != selectedDifficulty)
                                     card.setBorder(BorderFactory.createLineBorder(Theme.TEXT_DIM, 2));
                         }
-                        @Override public void mouseExited(MouseEvent e) { updateDifficultySelection(); }
+
+                        @Override
+                        public void mouseExited(MouseEvent e) {
+                              updateDifficultySelection();
+                        }
                   });
 
                   diffCards[i] = card;
@@ -325,7 +339,8 @@ public class MenuPanel extends BackgroundPanel {
       private void updateDifficultySelection() {
             GameModel.Difficulty[] difficulties = GameModel.Difficulty.values();
             for (int i = 0; i < difficulties.length; i++) {
-                  if (diffCards[i] == null) continue;
+                  if (diffCards[i] == null)
+                        continue;
                   if (difficulties[i] == selectedDifficulty) {
                         diffCards[i].setBorder(BorderFactory.createLineBorder(Theme.BULB_ON, 2));
                         diffCards[i].setBackground(new Color(57, 255, 20, 15));
@@ -395,7 +410,8 @@ public class MenuPanel extends BackgroundPanel {
       }
 
       private void updateLevelButtons() {
-            if (xpLabel != null) xpLabel.setText(selectedMode.name.toUpperCase());
+            if (xpLabel != null)
+                  xpLabel.setText(selectedMode.name.toUpperCase());
             for (int i = 0; i < 25; i++) {
                   int lv = i + 1;
                   boolean unlocked = model.isLevelUnlocked(lv);
@@ -410,7 +426,8 @@ public class MenuPanel extends BackgroundPanel {
                   numLbl.setAlignmentX(CENTER_ALIGNMENT);
 
                   StringBuilder starText = new StringBuilder();
-                  for (int s = 0; s < 3; s++) starText.append(s < stars ? "\u2605" : "\u2606");
+                  for (int s = 0; s < 3; s++)
+                        starText.append(s < stars ? "\u2605" : "\u2606");
                   JLabel starLbl = new JLabel(starText.toString(), SwingConstants.CENTER);
                   starLbl.setFont(Theme.pixelFont(8));
                   starLbl.setAlignmentX(CENTER_ALIGNMENT);

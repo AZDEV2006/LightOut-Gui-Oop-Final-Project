@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "==============================="
-echo "Pid Switch 3 Por"
+echo "Light Out"
 echo "==============================="
 
 SRC_DIR="src"
@@ -25,7 +25,7 @@ fi
 
 echo "Compilation successful!"
 
-echo "Launching Pid Switch 3 Por..."
+echo "Launching Light Out..."
 java -cp "$BUILD_DIR" "$MAIN_CLASS"
 
 if [ $? -ne 0 ]; then

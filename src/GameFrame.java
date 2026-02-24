@@ -12,7 +12,7 @@ public class GameFrame extends JFrame {
       private final GamePanel gamePanel;
 
       public GameFrame(GameModel model) {
-            super("Pid Switch 3 Por");
+            super("Light Out");
             this.model = model;
 
             setDefaultCloseOperation(EXIT_ON_CLOSE);
