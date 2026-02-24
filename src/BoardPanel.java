@@ -15,6 +15,7 @@ public class BoardPanel extends JPanel {
             setLayout(new BorderLayout());
       }
 
+<<<<<<< Updated upstream
       public void buildBoard(int lightCount, boolean isGrid, ActionListener leverListener) {
       removeAll();
       this.count = lightCount;
@@ -51,36 +52,106 @@ public class BoardPanel extends JPanel {
                   JPanel column = new JPanel();
                   column.setOpaque(false);
                   column.setLayout(new BoxLayout(column, BoxLayout.Y_AXIS));
+=======
+      public void buildBoard(int lightCount, int leverCount, boolean isGrid, ActionListener leverListener) {
+            removeAll();
+            this.count = lightCount;
 
-                  bulbs[i] = new BulbView();
-                  bulbs[i].setAlignmentX(Component.CENTER_ALIGNMENT);
+            bulbs  = new BulbView[lightCount];
+            levers = new LeverView[leverCount];
 
+            JPanel content;
+
+            if (isGrid) {
+                  int cols = (int) Math.ceil(Math.sqrt(lightCount));
+                  int rows = (int) Math.ceil((double) lightCount / cols);
+
+                  JPanel bulbGrid = new JPanel(new GridLayout(rows, cols, 8, 8));
+                  bulbGrid.setOpaque(false);
+                  for (int i = 0; i < lightCount; i++) {
+                        bulbs[i] = new BulbView();
+                        bulbGrid.add(bulbs[i]);
+                  }
+>>>>>>> Stashed changes
+
+                  JPanel leverRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 4));
+                  leverRow.setOpaque(false);
+                  for (int i = 0; i < leverCount; i++) {
+                        levers[i] = new LeverView();
+                        final int index = i;
+                        levers[i].addActionListener(e ->
+                              leverListener.actionPerformed(
+                                    new java.awt.event.ActionEvent(this, 40, String.valueOf(index))));
+                        leverRow.add(levers[i]);
+                  }
+
+<<<<<<< Updated upstream
                   levers[i] = new LeverView();
                   levers[i].setAlignmentX(Component.CENTER_ALIGNMENT);
                   final int index = i;
                   levers[i].addActionListener(e ->
                   leverListener.actionPerformed(
                         new java.awt.event.ActionEvent(this, 40, String.valueOf(index))));
+=======
+                  content = new JPanel();
+                  content.setOpaque(false);
+                  content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
+                  content.add(bulbGrid);
+                  content.add(Box.createVerticalStrut(12));
+                  content.add(leverRow);
+>>>>>>> Stashed changes
 
-                  JLabel lbl = Theme.makeLabel(String.valueOf(i + 1), 10, Theme.TEXT_DIM);
-                  lbl.setAlignmentX(Component.CENTER_ALIGNMENT);
+            } else {
+                  content = new JPanel();
+                  content.setOpaque(false);
+                  content.setLayout(new GridLayout(1, lightCount, 12, 0));
 
-                  column.add(Box.createVerticalGlue());
-                  column.add(bulbs[i]);
-                  column.add(Box.createVerticalStrut(10));
-                  column.add(levers[i]);
-                  column.add(Box.createVerticalStrut(4));
-                  column.add(lbl);
-                  column.add(Box.createVerticalGlue());
+                  for (int i = 0; i < lightCount; i++) {
+                        JPanel column = new JPanel();
+                        column.setOpaque(false);
+                        column.setLayout(new BoxLayout(column, BoxLayout.Y_AXIS));
 
+<<<<<<< Updated upstream
                   grid.add(column);
+=======
+                        bulbs[i] = new BulbView();
+                        bulbs[i].setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                        levers[i] = new LeverView();
+                        levers[i].setAlignmentX(Component.CENTER_ALIGNMENT);
+                        final int index = i;
+                        levers[i].addActionListener(e ->
+                              leverListener.actionPerformed(
+                                    new java.awt.event.ActionEvent(this, 40, String.valueOf(index))));
+
+                        JLabel lbl = Theme.makeLabel(String.valueOf(i + 1), 10, Theme.TEXT_DIM);
+                        lbl.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+                        column.add(Box.createVerticalGlue());
+                        column.add(bulbs[i]);
+                        column.add(Box.createVerticalStrut(10));
+                        column.add(levers[i]);
+                        column.add(Box.createVerticalStrut(4));
+                        column.add(lbl);
+                        column.add(Box.createVerticalGlue());
+
+                        content.add(column);
+                  }
+>>>>>>> Stashed changes
             }
       }
 
+<<<<<<< Updated upstream
       JPanel wrapper = new JPanel(new BorderLayout());
       wrapper.setOpaque(false);
       wrapper.setBorder(BorderFactory.createEmptyBorder(16, 24, 16, 24));
       wrapper.add(grid, BorderLayout.CENTER);
+=======
+            JPanel wrapper = new JPanel(new BorderLayout());
+            wrapper.setOpaque(false);
+            wrapper.setBorder(BorderFactory.createEmptyBorder(16, 24, 16, 24));
+            wrapper.add(content, BorderLayout.CENTER);
+>>>>>>> Stashed changes
 
       JPanel frame = new JPanel(new BorderLayout());
       frame.setBackground(Theme.BG_CARD);
@@ -95,11 +166,9 @@ public class BoardPanel extends JPanel {
       }
 
       public void updateFromModel(GameModel model) {
-            if (bulbs == null)
-                  return;
+            if (bulbs == null) return;
             for (int i = 0; i < count; i++) {
-                  boolean on = model.isLightOn(i);
-                  bulbs[i].setOn(on);
+                  bulbs[i].setOn(model.isLightOn(i));
             }
             repaint();
       }
@@ -112,9 +181,7 @@ public class BoardPanel extends JPanel {
 
       public void clearHints() {
             if (bulbs != null) {
-                  for (BulbView bulb : bulbs) {
-                        bulb.setHintGlow(false);
-                  }
+                  for (BulbView bulb : bulbs) bulb.setHintGlow(false);
             }
       }
 }

@@ -33,10 +33,17 @@ public class MenuPanel extends BackgroundPanel {
             setLayout(new BorderLayout());
 
             cardPanel.setOpaque(false);
+<<<<<<< Updated upstream
             cardPanel.add(buildStartScreen(), "start");
             cardPanel.add(buildModeScreen(), "mode");
             cardPanel.add(buildLevelScreen(), "level");
             cardPanel.add(buildDifficultyScreen(), "difficulty");
+=======
+            cardPanel.add(buildStartScreen(),      "start");
+            cardPanel.add(buildModeScreen(),       "mode");
+            cardPanel.add(buildDifficultyScreen(), "difficulty");
+            cardPanel.add(buildLevelScreen(),      "level");
+>>>>>>> Stashed changes
 
             add(cardPanel, BorderLayout.CENTER);
             showCard("start");
@@ -55,19 +62,16 @@ public class MenuPanel extends BackgroundPanel {
       private JPanel buildStartScreen() {
             BackgroundPanel panel = new BackgroundPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
             panel.add(Box.createVerticalGlue());
 
             JLabel title = Theme.makeLabel("Pid Switch 3 Por", 36, Theme.TEXT_TITLE);
             title.setAlignmentX(CENTER_ALIGNMENT);
             panel.add(title);
-
             panel.add(Box.createVerticalStrut(6));
 
             JLabel subtitle = Theme.makeLabel("Pid sa mai Pid ja huge some", 12, Theme.TEXT_DIM);
             subtitle.setAlignmentX(CENTER_ALIGNMENT);
             panel.add(subtitle);
-
             panel.add(Box.createVerticalStrut(20));
 
             JPanel infoCard = new JPanel();
@@ -79,10 +83,9 @@ public class MenuPanel extends BackgroundPanel {
             infoCard.setMaximumSize(new Dimension(280, 80));
             infoCard.setAlignmentX(CENTER_ALIGNMENT);
 
-            lvLabel = Theme.makeLabel("LEVEL 1  ·  0 XP", 12, Theme.TEXT_DIM);
+            lvLabel = Theme.makeLabel("LEVEL 1  \u00b7  0 XP", 12, Theme.TEXT_DIM);
             lvLabel.setAlignmentX(CENTER_ALIGNMENT);
             infoCard.add(lvLabel);
-
             infoCard.add(Box.createVerticalStrut(8));
 
             xpBarBg = new JPanel(new BorderLayout());
@@ -98,17 +101,15 @@ public class MenuPanel extends BackgroundPanel {
 
             infoCard.add(xpBarBg);
             panel.add(infoCard);
-
             panel.add(Box.createVerticalStrut(24));
 
-            JButton playBtn = Theme.makeButton("▶  P L A Y");
+            JButton playBtn = Theme.makeButton("\u25b6  P L A Y");
             playBtn.setAlignmentX(CENTER_ALIGNMENT);
             playBtn.setMaximumSize(new Dimension(220, 48));
             playBtn.setPreferredSize(new Dimension(220, 48));
             playBtn.setFont(Theme.pixelFont(16));
             playBtn.addActionListener(e -> showCard("mode"));
             panel.add(playBtn);
-
             panel.add(Box.createVerticalStrut(12));
 
             JButton profileBtn = Theme.makeButton("P R O F I L E");
@@ -119,14 +120,13 @@ public class MenuPanel extends BackgroundPanel {
             panel.add(profileBtn);
 
             panel.add(Box.createVerticalGlue());
-
             updatePlayerInfo();
             return panel;
       }
 
       private void updatePlayerInfo() {
             if (lvLabel != null) {
-                  lvLabel.setText("LEVEL " + model.getPlayerLevel() + "  ·  " + model.getTotalXP() + " XP");
+                  lvLabel.setText("LEVEL " + model.getPlayerLevel() + "  \u00b7  " + model.getTotalXP() + " XP");
             }
             if (xpBarFill != null && xpBarBg != null) {
                   double progress = model.getXpProgress();
@@ -138,24 +138,22 @@ public class MenuPanel extends BackgroundPanel {
 
       private void showProfile() {
             JOptionPane.showMessageDialog(this,
-                        "Level: " + model.getPlayerLevel()
-                                    + "\nTotal XP: " + model.getTotalXP()
-                                    + "\nGames: " + model.getGamesPlayed() + " (Won: " + model.getGamesWon() + ")"
-                                    + "\nHints: " + model.getHints()
-                                    + "\nLevels cleared: " + model.getLevelsCleared(),
+                        "Level: "          + model.getPlayerLevel()
+                        + "\nTotal XP: "   + model.getTotalXP()
+                        + "\nGames: "      + model.getGamesPlayed() + " (Won: " + model.getGamesWon() + ")"
+                        + "\nHints: "      + model.getHints()
+                        + "\nLevels cleared: " + model.getLevelsCleared(),
                         "Profile", JOptionPane.INFORMATION_MESSAGE);
       }
 
       private JPanel buildModeScreen() {
             BackgroundPanel panel = new BackgroundPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
             panel.add(Box.createVerticalGlue());
 
             JLabel title = Theme.makeLabel("SELECT MODE", 24, Theme.TEXT_LIGHT);
             title.setAlignmentX(CENTER_ALIGNMENT);
             panel.add(title);
-
             panel.add(Box.createVerticalStrut(20));
 
             JPanel modeGrid = new JPanel(new GridLayout(2, 2, 12, 12));
@@ -184,24 +182,16 @@ public class MenuPanel extends BackgroundPanel {
                   card.add(desc);
 
                   card.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
+                        @Override public void mouseClicked(MouseEvent e) {
                               selectedMode = modes[idx];
                               model.setCurrentMode(selectedMode);
                               updateModeSelection();
                         }
-
-                        @Override
-                        public void mouseEntered(MouseEvent e) {
-                              if (modes[idx] != selectedMode) {
+                        @Override public void mouseEntered(MouseEvent e) {
+                              if (modes[idx] != selectedMode)
                                     card.setBorder(BorderFactory.createLineBorder(Theme.TEXT_DIM, 2));
-                              }
                         }
-
-                        @Override
-                        public void mouseExited(MouseEvent e) {
-                              updateModeSelection();
-                        }
+                        @Override public void mouseExited(MouseEvent e) { updateModeSelection(); }
                   });
 
                   modeCards[i] = card;
@@ -210,7 +200,6 @@ public class MenuPanel extends BackgroundPanel {
             }
 
             panel.add(modeGrid);
-
             panel.add(Box.createVerticalStrut(20));
 
             JPanel btnRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 12, 0));
@@ -219,15 +208,19 @@ public class MenuPanel extends BackgroundPanel {
             JButton backBtn = Theme.makeButton("BACK");
             backBtn.addActionListener(e -> showCard("start"));
 
+<<<<<<< Updated upstream
             JButton nextBtn = Theme.makeButton("NEXT ▶");
             nextBtn.addActionListener(e -> {
                   showCard("difficulty");
             });
+=======
+            JButton nextBtn = Theme.makeButton("NEXT \u25b6");
+            nextBtn.addActionListener(e -> showCard("difficulty")); // ไปหน้า difficulty ก่อนเสมอ
+>>>>>>> Stashed changes
 
             btnRow.add(backBtn);
             btnRow.add(nextBtn);
             panel.add(btnRow);
-
             panel.add(Box.createVerticalGlue());
 
             updateModeSelection();
@@ -247,22 +240,129 @@ public class MenuPanel extends BackgroundPanel {
             }
       }
 
+      private JPanel buildDifficultyScreen() {
+            BackgroundPanel panel = new BackgroundPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+            panel.add(Box.createVerticalGlue());
+
+            JLabel title = Theme.makeLabel("SELECT DIFFICULTY", 24, Theme.TEXT_LIGHT);
+            title.setAlignmentX(CENTER_ALIGNMENT);
+            panel.add(title);
+            panel.add(Box.createVerticalStrut(20));
+
+            GameModel.Difficulty[] difficulties = GameModel.Difficulty.values();
+            JPanel diffRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 12, 0));
+            diffRow.setOpaque(false);
+
+            for (int i = 0; i < difficulties.length; i++) {
+                  final GameModel.Difficulty diff = difficulties[i];
+
+                  JPanel card = new JPanel();
+                  card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+                  card.setBackground(Theme.BG_CARD);
+                  card.setBorder(BorderFactory.createLineBorder(Theme.LEVER_BASE, 2));
+                  card.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                  card.setPreferredSize(new Dimension(120, 110));
+
+                  JLabel name = Theme.makeLabel(diff.name, 13, Theme.TEXT_LIGHT);
+                  name.setAlignmentX(CENTER_ALIGNMENT);
+                  name.setBorder(BorderFactory.createEmptyBorder(10, 10, 4, 10));
+                  card.add(name);
+
+                  JLabel lightsLbl = Theme.makeLabel(diff.lightCount + " lights", 10, Theme.TEXT_DIM);
+                  lightsLbl.setAlignmentX(CENTER_ALIGNMENT);
+                  card.add(lightsLbl);
+
+                  JLabel leversLbl = Theme.makeLabel(diff.leverCount + " levers", 10, Theme.TEXT_DIM);
+                  leversLbl.setAlignmentX(CENTER_ALIGNMENT);
+                  card.add(leversLbl);
+
+                  JLabel timeLbl = Theme.makeLabel(
+                              diff.hasTimer() ? diff.timeLimit + "s" : "\u221e time",
+                              10, Theme.TEXT_DIM);
+                  timeLbl.setAlignmentX(CENTER_ALIGNMENT);
+                  card.add(timeLbl);
+
+                  JLabel hintLbl = Theme.makeLabel(
+                              diff.hintsAllowed > 0 ? diff.hintsAllowed + " hints" : "no hints",
+                              10, Theme.TEXT_DIM);
+                  hintLbl.setAlignmentX(CENTER_ALIGNMENT);
+                  hintLbl.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+                  card.add(hintLbl);
+
+                  card.addMouseListener(new MouseAdapter() {
+                        @Override public void mouseClicked(MouseEvent e) {
+                              selectedDifficulty = diff;
+                              updateDifficultySelection();
+                        }
+                        @Override public void mouseEntered(MouseEvent e) {
+                              if (diff != selectedDifficulty)
+                                    card.setBorder(BorderFactory.createLineBorder(Theme.TEXT_DIM, 2));
+                        }
+                        @Override public void mouseExited(MouseEvent e) { updateDifficultySelection(); }
+                  });
+
+                  diffCards[i] = card;
+                  diffRow.add(card);
+            }
+
+            panel.add(diffRow);
+            panel.add(Box.createVerticalStrut(20));
+
+            JPanel btnRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 12, 0));
+            btnRow.setOpaque(false);
+
+            JButton backBtn = Theme.makeButton("\u25c4 BACK");
+            backBtn.addActionListener(e -> showCard("mode"));
+
+            JButton nextBtn = Theme.makeButton("NEXT \u25b6");
+            nextBtn.addActionListener(e -> {
+                  model.setCurrentDifficulty(selectedDifficulty);
+                  if (selectedMode == GameModel.GameMode.CLASSIC) {
+                        updateLevelButtons();
+                        showCard("level");
+                  } else {
+                        model.setCurrentLevel(1);
+                        onStartGame.run();
+                  }
+            });
+
+            btnRow.add(backBtn);
+            btnRow.add(nextBtn);
+            panel.add(btnRow);
+            panel.add(Box.createVerticalGlue());
+
+            updateDifficultySelection();
+            return panel;
+      }
+
+      private void updateDifficultySelection() {
+            GameModel.Difficulty[] difficulties = GameModel.Difficulty.values();
+            for (int i = 0; i < difficulties.length; i++) {
+                  if (diffCards[i] == null) continue;
+                  if (difficulties[i] == selectedDifficulty) {
+                        diffCards[i].setBorder(BorderFactory.createLineBorder(Theme.BULB_ON, 2));
+                        diffCards[i].setBackground(new Color(57, 255, 20, 15));
+                  } else {
+                        diffCards[i].setBorder(BorderFactory.createLineBorder(Theme.LEVER_BASE, 2));
+                        diffCards[i].setBackground(Theme.BG_CARD);
+                  }
+            }
+      }
+
       private JPanel buildLevelScreen() {
             BackgroundPanel panel = new BackgroundPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
             panel.add(Box.createVerticalGlue());
 
             JLabel title = Theme.makeLabel("SELECT LEVEL", 24, Theme.TEXT_LIGHT);
             title.setAlignmentX(CENTER_ALIGNMENT);
             panel.add(title);
-
             panel.add(Box.createVerticalStrut(6));
 
             xpLabel = Theme.makeLabel("", 11, Theme.TEXT_DIM);
             xpLabel.setAlignmentX(CENTER_ALIGNMENT);
             panel.add(xpLabel);
-
             panel.add(Box.createVerticalStrut(16));
 
             JPanel lvGrid = new JPanel(new GridLayout(5, 5, 8, 8));
@@ -296,16 +396,14 @@ public class MenuPanel extends BackgroundPanel {
             }
 
             panel.add(lvGrid);
-
             panel.add(Box.createVerticalStrut(16));
 
-            JButton backBtn = Theme.makeButton("◀ BACK");
+            JButton backBtn = Theme.makeButton("\u25c4 BACK");
             backBtn.setAlignmentX(CENTER_ALIGNMENT);
-            backBtn.addActionListener(e -> showCard("mode"));
+            backBtn.addActionListener(e -> showCard("difficulty"));
             panel.add(backBtn);
 
             panel.add(Box.createVerticalGlue());
-
             updateLevelButtons();
             return panel;
       }
@@ -421,9 +519,7 @@ public class MenuPanel extends BackgroundPanel {
       }
 
       private void updateLevelButtons() {
-            if (xpLabel != null) {
-                  xpLabel.setText(selectedMode.name.toUpperCase());
-            }
+            if (xpLabel != null) xpLabel.setText(selectedMode.name.toUpperCase());
             for (int i = 0; i < 25; i++) {
                   int lv = i + 1;
                   boolean unlocked = model.isLevelUnlocked(lv);
@@ -438,9 +534,7 @@ public class MenuPanel extends BackgroundPanel {
                   numLbl.setAlignmentX(CENTER_ALIGNMENT);
 
                   StringBuilder starText = new StringBuilder();
-                  for (int s = 0; s < 3; s++) {
-                        starText.append(s < stars ? "★" : "☆");
-                  }
+                  for (int s = 0; s < 3; s++) starText.append(s < stars ? "\u2605" : "\u2606");
                   JLabel starLbl = new JLabel(starText.toString(), SwingConstants.CENTER);
                   starLbl.setFont(Theme.pixelFont(8));
                   starLbl.setAlignmentX(CENTER_ALIGNMENT);
@@ -462,7 +556,7 @@ public class MenuPanel extends BackgroundPanel {
                         btn.setBackground(Theme.BG_DARK);
                         btn.setBorder(BorderFactory.createLineBorder(new Color(50, 46, 58), 2));
                         numLbl.setForeground(new Color(60, 56, 68));
-                        numLbl.setText("🔒");
+                        numLbl.setText("\uD83D\uDD12");
                         starLbl.setForeground(new Color(50, 46, 58));
                         sizeLbl.setForeground(new Color(50, 46, 58));
                         btn.setEnabled(false);
@@ -473,7 +567,6 @@ public class MenuPanel extends BackgroundPanel {
                   btn.add(starLbl);
                   btn.add(sizeLbl);
                   btn.add(Box.createVerticalGlue());
-
                   btn.revalidate();
                   btn.repaint();
             }
