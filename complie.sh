@@ -28,6 +28,11 @@ fi
 
 echo "Compilation successful!"
 
+echo "Copying assets..."
+mkdir -p "$BUILD_DIR/src/assets"
+cp -r "$SRC_DIR/assets/sounds" "$BUILD_DIR/src/assets/sounds"
+cp -r "$SRC_DIR/assets/"*.png "$BUILD_DIR/src/assets/"
+
 echo "Creating JAR file..."
 echo "Main-Class: $MAIN_CLASS" > "$BUILD_DIR/manifest.txt"
 jar cfm "$RELEASE_DIR/$JAR_FILE" "$BUILD_DIR/manifest.txt" -C "$BUILD_DIR" .

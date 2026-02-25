@@ -12,7 +12,12 @@ public class BackgroundPanel extends JPanel {
 
       static {
             try {
-                  bgImage = ImageIO.read(new File("src/assets/javabackground.png"));
+                  java.io.InputStream is = BackgroundPanel.class.getResourceAsStream("/src/assets/javabackground.png");
+                  if (is != null) {
+                        bgImage = ImageIO.read(is);
+                  } else {
+                        bgImage = ImageIO.read(new File("src/assets/javabackground.png"));
+                  }
             } catch (Exception e) {
                   System.err.println("Could not load background image: " + e.getMessage());
                   bgImage = null;

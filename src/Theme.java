@@ -89,6 +89,9 @@ public final class Theme {
 
       public static Image loadImage(String path) {
             try {
+                  java.io.InputStream is = Theme.class.getResourceAsStream("/src/assets/" + path);
+                  if (is != null)
+                        return ImageIO.read(is);
                   return ImageIO.read(new File("src/assets/" + path));
             } catch (Exception e) {
                   System.err.println("Failed to load image: " + path);
