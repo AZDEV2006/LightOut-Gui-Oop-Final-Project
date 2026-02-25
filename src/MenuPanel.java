@@ -24,7 +24,6 @@ public class MenuPanel extends BackgroundPanel {
       private final JPanel[] diffCards = new JPanel[3];
 
       private final JButton[] levelBtns = new JButton[25];
-      private final JLabel[] starLabels = new JLabel[25];
 
       public MenuPanel(GameModel model, Runnable onStartGame) {
             this.model = model;
@@ -386,11 +385,6 @@ public class MenuPanel extends BackgroundPanel {
                         }
                   });
 
-                  JLabel star = new JLabel("", SwingConstants.CENTER);
-                  star.setFont(Theme.pixelFont(9));
-                  star.setAlignmentX(CENTER_ALIGNMENT);
-                  starLabels[i] = star;
-
                   levelBtns[i] = btn;
                   lvGrid.add(btn);
             }
@@ -415,7 +409,7 @@ public class MenuPanel extends BackgroundPanel {
                   int lv = i + 1;
                   boolean unlocked = model.isLevelUnlocked(lv);
                   int[] best = model.getBestForLevel(lv);
-                  int stars = best != null ? best[0] : 0;
+                  boolean cleared = best != null;
 
                   JButton btn = levelBtns[i];
                   btn.removeAll();
@@ -424,12 +418,9 @@ public class MenuPanel extends BackgroundPanel {
                   numLbl.setFont(Theme.pixelFont(14));
                   numLbl.setAlignmentX(CENTER_ALIGNMENT);
 
-                  StringBuilder starText = new StringBuilder();
-                  for (int s = 0; s < 3; s++)
-                        starText.append(s < stars ? "\u2605" : "\u2606");
-                  JLabel starLbl = new JLabel(starText.toString(), SwingConstants.CENTER);
-                  starLbl.setFont(Theme.pixelFont(8));
-                  starLbl.setAlignmentX(CENTER_ALIGNMENT);
+                  JLabel statusLbl = new JLabel(cleared ? "\u2713" : "", SwingConstants.CENTER);
+                  statusLbl.setFont(Theme.pixelFont(10));
+                  statusLbl.setAlignmentX(CENTER_ALIGNMENT);
 
                   int lc = model.lightCountFor(lv);
                   JLabel sizeLbl = new JLabel(lc + " lights", SwingConstants.CENTER);
@@ -441,7 +432,7 @@ public class MenuPanel extends BackgroundPanel {
                         btn.setBorder(BorderFactory.createLineBorder(
                                     lv == model.getCurrentLevel() ? Theme.PROGRESS_BAR_FILL : Theme.LEVER_BASE, 2));
                         numLbl.setForeground(Theme.TEXT_LIGHT);
-                        starLbl.setForeground(stars > 0 ? Theme.STAR_FILLED : Theme.TEXT_DIM);
+                        statusLbl.setForeground(cleared ? Theme.WIN_COLOR : Theme.TEXT_DIM);
                         sizeLbl.setForeground(Theme.TEXT_DIM);
                         btn.setEnabled(true);
                   } else {
@@ -449,14 +440,14 @@ public class MenuPanel extends BackgroundPanel {
                         btn.setBorder(BorderFactory.createLineBorder(new Color(50, 46, 58), 2));
                         numLbl.setForeground(new Color(60, 56, 68));
                         numLbl.setText("\uD83D\uDD12");
-                        starLbl.setForeground(new Color(50, 46, 58));
+                        statusLbl.setForeground(new Color(50, 46, 58));
                         sizeLbl.setForeground(new Color(50, 46, 58));
                         btn.setEnabled(false);
                   }
 
                   btn.add(Box.createVerticalGlue());
                   btn.add(numLbl);
-                  btn.add(starLbl);
+                  btn.add(statusLbl);
                   btn.add(sizeLbl);
                   btn.add(Box.createVerticalGlue());
                   btn.revalidate();

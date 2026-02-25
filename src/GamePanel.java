@@ -332,18 +332,14 @@ public class GamePanel extends BackgroundPanel {
 
       private void showResult(boolean won) {
             showingResult = true;
-            int stars = 0;
 
             if (won) {
-                  stars = model.calcStars();
                   model.recordWin();
             } else {
                   model.recordLoss();
             }
 
             updateProgressBar();
-
-            final int fstars = stars;
 
             resultOverlay = new JPanel() {
                   @Override
@@ -370,15 +366,6 @@ public class GamePanel extends BackgroundPanel {
             card.add(Box.createVerticalStrut(12));
 
             if (won) {
-                  StringBuilder starStr = new StringBuilder();
-                  for (int i = 0; i < 3; i++)
-                        starStr.append(i < fstars ? "\u2605 " : "\u2606 ");
-                  JLabel starLbl = Theme.makeLabel(starStr.toString().trim(), 22,
-                              fstars >= 3 ? Theme.STAR_FILLED : Theme.TEXT_DIM);
-                  starLbl.setAlignmentX(CENTER_ALIGNMENT);
-                  card.add(starLbl);
-                  card.add(Box.createVerticalStrut(12));
-
                   long sec = model.getElapsed() / 1000;
                   JLabel movesLbl = Theme.makeLabel("Moves: " + model.getMoves(), 13, Theme.TEXT_DIM);
                   movesLbl.setAlignmentX(CENTER_ALIGNMENT);

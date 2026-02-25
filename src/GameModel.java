@@ -176,22 +176,12 @@ public class GameModel {
             return c;
       }
 
-      public int calcStars() {
-            int optimal = lightCount + difficulty;
-            if (hintsUsed == 0 && moves <= optimal * 1.3)
-                  return 3;
-            if (moves <= optimal * 2)
-                  return 2;
-            return 1;
-      }
-
       public void recordWin() {
             gamesPlayed++;
             gamesWon++;
-            int stars = calcStars();
             int[] prev = bestScores.get(currentLevel);
-            if (prev == null || stars > prev[0] || (stars == prev[0] && moves < prev[1])) {
-                  bestScores.put(currentLevel, new int[] { stars, moves });
+            if (prev == null || moves < prev[0]) {
+                  bestScores.put(currentLevel, new int[] { moves });
             }
             if (currentMode == GameMode.CLASSIC && currentLevel >= maxUnlocked && currentLevel < 25) {
                   maxUnlocked = currentLevel + 1;
